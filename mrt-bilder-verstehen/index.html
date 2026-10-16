@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRT-Bilder verstehen – T1, T2 und welche Serie was zeigt</title>
+<meta name="description" content="MRT-Bilder verstehen für Laien: Was bedeuten T1, T2, FLAIR, STIR und DWI? Welche Serie zeigt was, wie liest man Schnittebenen? Verständlich erklärt.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://freimoser.github.io/dicom-viewer/mrt-bilder-verstehen/">
+<meta name="google-site-verification" content="6pYvtFCnU7UFcQFajtMSkQ7tYMy3Z_Bt7teKiT5yKNg" />
+<meta name="msvalidate.01" content="E1F30DEB311AAF5458907DB431B481AC" />
+<meta property="og:type" content="website"><meta property="og:locale" content="de_DE"><meta property="og:site_name" content="DICOM Viewer">
+<meta property="og:title" content="MRT-Bilder verstehen – T1, T2 und welche Serie was zeigt"><meta property="og:description" content="MRT-Bilder verstehen für Laien: Was bedeuten T1, T2, FLAIR, STIR und DWI? Welche Serie zeigt was, wie liest man Schnittebenen? Verständlich erklärt.">
+<meta property="og:url" content="https://freimoser.github.io/dicom-viewer/mrt-bilder-verstehen/"><meta property="og:image" content="https://freimoser.github.io/dicom-viewer/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b1117">
+<link rel="icon" href="/dicom-viewer/favicon.svg" type="image/svg+xml"><link rel="icon" href="/dicom-viewer/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/dicom-viewer/apple-touch-icon.png">
+<link rel="stylesheet" href="/dicom-viewer/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Was ist der Unterschied zwischen T1 und T2?", "acceptedAnswer": {"@type": "Answer", "text": "In T1 erscheint Fett hell und Flüssigkeit dunkel, in T2 ist Flüssigkeit hell. T1 zeigt gut die Anatomie, T2 eher Wassereinlagerungen und Entzündungen."}}, {"@type": "Question", "name": "Warum gibt es so viele Serien?", "acceptedAnswer": {"@type": "Answer", "text": "Jede Serie betont andere Gewebeeigenschaften oder zeigt eine andere Schnittebene. Erst zusammen ergeben sie ein vollständiges Bild."}}, {"@type": "Question", "name": "Kann ich anhand der Bilder selbst etwas erkennen?", "acceptedAnswer": {"@type": "Answer", "text": "Laien können Anatomie erkennen, aber Befunde zuverlässig zu beurteilen erfordert Fachwissen. Der Viewer ist kein Medizinprodukt und nur zur Ansicht gedacht."}}, {"@type": "Question", "name": "Was bedeutet KM im Seriennamen?", "acceptedAnswer": {"@type": "Answer", "text": "KM steht für Kontrastmittel. Diese Serie wurde nach der Gabe von Kontrastmittel aufgenommen, meist in T1-Wichtung."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "DICOM Viewer", "item": "https://freimoser.github.io/dicom-viewer/"}, {"@type": "ListItem", "position": 2, "name": "MRT-Bilder verstehen: T1, T2 und Co.", "item": "https://freimoser.github.io/dicom-viewer/mrt-bilder-verstehen/"}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="/dicom-viewer/"><img src="/dicom-viewer/favicon.svg" alt="" width="28" height="28">DICOM Viewer</a><nav class="main"><a href="/dicom-viewer/">Viewer</a><a href="/dicom-viewer/radiologie-cd-oeffnen/">Radiologie-CD öffnen</a><a href="/dicom-viewer/dicom-in-jpg/">DICOM in JPG</a><a href="/dicom-viewer/dicom-viewer-mac/">Mac</a><a href="/dicom-viewer/dicom-iphone/">iPhone</a><a href="/dicom-viewer/mrt-bilder-verstehen/" aria-current="page">MRT verstehen</a></nav></div></header>
+<main class="wrap">
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Ihre Dateien bleiben auf Ihrem Gerät – es gibt keinen Upload.</div>
+<h1>MRT-Bilder verstehen: T1, T2 und Co.</h1>
+<p class="lead">Auf Ihrer CD liegen zehn Serien mit kryptischen Namen wie „t2_tse_sag“ oder „t1_vibe_fs_tra_KM“? Hier steht, was diese Abkürzungen bedeuten – als Orientierung, nicht als Befund.</p>
+<p><a class="btn pri" href="/dicom-viewer/">DICOM Viewer öffnen →</a></p>
+<div class="content"><div class="card"><strong>Wichtig:</strong> Diese Seite erklärt Begriffe, sie ersetzt keinen Befund. Ob etwas auffällig ist, kann nur die Radiologin oder der Radiologe beurteilen, der alle Serien gemeinsam und mit Ihrer Vorgeschichte betrachtet.</div>
+<h2>Die Seriennamen entschlüsseln</h2>
+<p>Ein Serienname setzt sich meist aus Wichtung, Sequenztyp, Zusätzen und Schnittebene zusammen. Beispiel <code>t2_tse_fs_sag</code>: T2-gewichtet, Turbo-Spin-Echo, mit Fettsättigung, sagittale Ebene.</p>
+<table><thead><tr><th>Kürzel</th><th>Bedeutung</th><th>Woran man es erkennt</th></tr></thead><tbody>
+<tr><td>T1</td><td>T1-Wichtung, gute Darstellung der Anatomie</td><td>Fett hell, Wasser (z. B. Liquor) dunkel</td></tr>
+<tr><td>T2</td><td>T2-Wichtung, zeigt Flüssigkeit und Wassereinlagerungen</td><td>Wasser und Liquor hell, Fett mittelhell</td></tr>
+<tr><td>PD</td><td>Protonendichte, oft bei Gelenken</td><td>Kontrast zwischen T1 und T2, Knorpel gut sichtbar</td></tr>
+<tr><td>FLAIR</td><td>T2 mit unterdrücktem Wassersignal, v. a. Kopf</td><td>Liquor dunkel, Gewebe ähnlich T2</td></tr>
+<tr><td>STIR / fs / FatSat / SPAIR</td><td>Fettunterdrückung</td><td>Fett dunkel, Flüssigkeit hebt sich stark ab</td></tr>
+<tr><td>DWI / ADC</td><td>Diffusion, misst Wasserbeweglichkeit</td><td>Körniges, kontrastarmes Bild; ADC ist die berechnete Karte dazu</td></tr>
+<tr><td>KM / +C / post / Gd</td><td>Nach Kontrastmittel</td><td>Meist T1; Gefäße und gut durchblutetes Gewebe hell</td></tr>
+<tr><td>localizer / scout / survey</td><td>Übersichtsbilder zur Planung</td><td>Wenige grobe Bilder in drei Ebenen</td></tr>
+</tbody></table>
+<h2>Die drei Schnittebenen</h2>
+<ul><li><strong>sag (sagittal):</strong> Schnitt von der Seite, wie ein Profil.</li>
+<li><strong>cor (coronal/koronar):</strong> Schnitt von vorn, als ob man Ihnen gegenübersteht.</li>
+<li><strong>tra / ax (transversal/axial):</strong> Schnitt quer, betrachtet von den Füßen her. Ihre linke Körperseite liegt daher auf dem Bild rechts.</li></ul>
+<h2>Hell und dunkel</h2>
+<p>Im MRT sagt Helligkeit nichts über „gut“ oder „schlecht“ aus, sondern nur über die Signalstärke in der jeweiligen Wichtung. Dasselbe Gewebe kann in T1 dunkel und in T2 hell sein. Deshalb werden immer mehrere Serien verglichen. Im CT ist das anders: Dort entspricht die Helligkeit der Dichte (Knochen hell, Luft schwarz), gemessen in Hounsfield-Einheiten.</p>
+<h2>Selbst ansehen</h2>
+<p>Laden Sie Ihre CD in den <a href="../">DICOM Viewer</a>. In der Tag-Ansicht sehen Sie zu jeder Serie die Beschreibung (0008,103E), Echozeit (TE) und Repetitionszeit (TR). Faustregel: kurze TR und TE ≈ T1, lange TR und TE ≈ T2. Wie Sie die CD öffnen, steht unter <a href="../radiologie-cd-oeffnen/">Radiologie-CD öffnen</a>.</p>
+<h2>Was ist DICOM überhaupt?</h2>
+<p>DICOM ist das Dateiformat, in dem MRT, CT, Röntgen und Ultraschall gespeichert werden. Jede Datei enthält ein Bild (oder einen kurzen Film) plus Angaben zu Patient, Gerät und Aufnahmeparametern. Eine MRT-Untersuchung besteht meist aus mehreren Serien zu je 20 bis 200 Schichten.</p><h2>Häufige Fragen</h2><details class="faq"><summary>Was ist der Unterschied zwischen T1 und T2?</summary><p>In T1 erscheint Fett hell und Flüssigkeit dunkel, in T2 ist Flüssigkeit hell. T1 zeigt gut die Anatomie, T2 eher Wassereinlagerungen und Entzündungen.</p></details><details class="faq"><summary>Warum gibt es so viele Serien?</summary><p>Jede Serie betont andere Gewebeeigenschaften oder zeigt eine andere Schnittebene. Erst zusammen ergeben sie ein vollständiges Bild.</p></details><details class="faq"><summary>Kann ich anhand der Bilder selbst etwas erkennen?</summary><p>Laien können Anatomie erkennen, aber Befunde zuverlässig zu beurteilen erfordert Fachwissen. Der Viewer ist kein Medizinprodukt und nur zur Ansicht gedacht.</p></details><details class="faq"><summary>Was bedeutet KM im Seriennamen?</summary><p>KM steht für Kontrastmittel. Diese Serie wurde nach der Gabe von Kontrastmittel aufgenommen, meist in T1-Wichtung.</p></details></div>
+</main>
+<footer><div class="wrap">
+<p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
+<div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
+<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="https://freimoser.github.io/freimoser.de/impressum/">Datenschutz</a><span>Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt.</span></p>
+<p>Verwendet <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT-Lizenz, © Chris Hafey). Gebaut in München / Remote.</p>
+</div></footer>
+
+</body></html>

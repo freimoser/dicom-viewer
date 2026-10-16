@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DICOM Viewer kostenlos online – ohne Installation, ohne Upload</title>
+<meta name="description" content="DICOM Viewer kostenlos im Browser: Röntgen-, CT- und MRT-Bilder und ganze Radiologie-CDs ansehen. Keine Installation, kein Upload, anonymer PNG/JPG-Export.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://freimoser.github.io/dicom-viewer/">
+<meta name="google-site-verification" content="6pYvtFCnU7UFcQFajtMSkQ7tYMy3Z_Bt7teKiT5yKNg" />
+<meta name="msvalidate.01" content="E1F30DEB311AAF5458907DB431B481AC" />
+<meta property="og:type" content="website"><meta property="og:locale" content="de_DE"><meta property="og:site_name" content="DICOM Viewer">
+<meta property="og:title" content="DICOM Viewer kostenlos online – ohne Installation, ohne Upload"><meta property="og:description" content="DICOM Viewer kostenlos im Browser: Röntgen-, CT- und MRT-Bilder und ganze Radiologie-CDs ansehen. Keine Installation, kein Upload, anonymer PNG/JPG-Export.">
+<meta property="og:url" content="https://freimoser.github.io/dicom-viewer/"><meta property="og:image" content="https://freimoser.github.io/dicom-viewer/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b1117">
+<link rel="icon" href="/dicom-viewer/favicon.svg" type="image/svg+xml"><link rel="icon" href="/dicom-viewer/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/dicom-viewer/apple-touch-icon.png">
+<link rel="stylesheet" href="/dicom-viewer/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist der DICOM Viewer wirklich kostenlos?", "acceptedAnswer": {"@type": "Answer", "text": "Ja. Keine Anmeldung, keine Werbung im Viewer, keine Testphase."}}, {"@type": "Question", "name": "Werden meine Bilder hochgeladen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. Die Dateien werden ausschließlich in Ihrem Browser gelesen. Es gibt keinen Server, der sie empfängt."}}, {"@type": "Question", "name": "Kann ich damit eine Diagnose stellen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. Der Viewer ist kein Medizinprodukt und hat bewusst keine Mess- oder Befundfunktionen. Er dient nur zur Ansicht."}}, {"@type": "Question", "name": "Warum sehe ich nur eine Fehlermeldung?", "acceptedAnswer": {"@type": "Answer", "text": "Vermutlich ist das Bild mit JPEG 2000, JPEG Lossless oder RLE komprimiert. Diese Formate kann der Viewer noch nicht entpacken; die Meldung nennt das genaue Format."}}, {"@type": "Question", "name": "Funktioniert es auf dem Handy?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, in aktuellen Browsern auf Android und iPhone. Für große CT-Serien ist ein Computer angenehmer."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "DICOM Viewer", "url": "https://freimoser.github.io/dicom-viewer/", "description": "Kostenloser DICOM Viewer im Browser: Röntgen-, CT- und MRT-Bilder und Radiologie-CDs ohne Installation und ohne Upload ansehen, anonym als PNG oder JPG exportieren.", "applicationCategory": "MultimediaApplication", "operatingSystem": "Windows, macOS, Linux, iOS, Android", "browserRequirements": "Requires JavaScript", "inLanguage": "de-DE", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "featureList": ["Ordner und Radiologie-CDs laden, DICOMDIR erkennen", "Gruppierung nach Patient, Studie und Serie", "Fenster/Level, Zoom, Verschieben, Schichten blättern", "DICOM-Tag-Ansicht", "Anonymer Export als PNG und JPG", "Keine Datenübertragung, alles lokal"], "disambiguatingDescription": "Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "DICOM Viewer", "item": "https://freimoser.github.io/dicom-viewer/"}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="/dicom-viewer/"><img src="/dicom-viewer/favicon.svg" alt="" width="28" height="28">DICOM Viewer</a><nav class="main"><a href="/dicom-viewer/" aria-current="page">Viewer</a><a href="/dicom-viewer/radiologie-cd-oeffnen/">Radiologie-CD öffnen</a><a href="/dicom-viewer/dicom-in-jpg/">DICOM in JPG</a><a href="/dicom-viewer/dicom-viewer-mac/">Mac</a><a href="/dicom-viewer/dicom-iphone/">iPhone</a><a href="/dicom-viewer/mrt-bilder-verstehen/">MRT verstehen</a></nav></div></header>
+<main class="wrap">
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Ihre Dateien bleiben auf Ihrem Gerät – es gibt keinen Upload.</div>
+<h1>DICOM Viewer kostenlos online</h1>
+<p class="lead">Röntgen-, CT- und MRT-Bilder direkt im Browser öffnen – auch den kompletten Ordner einer Radiologie-CD. Keine Installation, keine Anmeldung und kein Upload: Die Dateien werden ausschließlich auf Ihrem Gerät gelesen.</p>
+
+<section class="drop" id="drop" aria-label="Dateien laden">
+<p><strong>DICOM-Dateien oder den ganzen Ordner der CD hierher ziehen</strong></p>
+<div class="btns">
+<label class="btn pri">📁 Ordner / CD wählen<input type="file" id="dirIn" webkitdirectory directory multiple></label>
+<label class="btn">📄 Dateien wählen<input type="file" id="fileIn" multiple></label>
+</div>
+<p style="color:var(--mu);font-size:.88rem;margin:10px 0 0">Erkennt DICOMDIR und Dateien ohne Endung. Unterstützt unkomprimierte Bilder und JPEG Baseline.</p>
+</section>
+<div class="msg" id="msg" hidden></div>
+<section class="app" id="app" hidden>
+<aside class="side" id="tree" aria-label="Patienten, Studien und Serien"></aside>
+<div class="main">
+<div class="tools">
+<button class="btn on" data-mode="wl" type="button" title="Linke Maustaste ziehen: Helligkeit/Kontrast">◐ Fenster</button>
+<button class="btn" data-mode="pan" type="button">✋ Verschieben</button>
+<button class="btn" data-mode="zoom" type="button">🔍 Zoom</button>
+<button class="btn" data-mode="scroll" type="button">↕ Blättern</button>
+<select id="presets" aria-label="Fenster-Vorgaben"><option value="">Fenster-Vorgabe …</option><option value="40,400">Weichteil</option><option value="-600,1500">Lunge</option><option value="400,1800">Knochen</option><option value="40,80">Gehirn</option></select>
+<button class="btn" data-mode="redact" type="button" title="Rechteck aufziehen, um eingebrannte Namen zu übermalen">⬛ Schwärzen</button>
+<button class="btn" id="unredact" type="button">Schwärzung löschen</button>
+<button class="btn" id="invert" type="button">Invertieren</button>
+<button class="btn" id="reset" type="button">Zurücksetzen</button>
+<button class="btn pri" id="png" type="button">PNG ⬇</button>
+<button class="btn" id="jpg" type="button">JPG ⬇</button>
+</div>
+<div class="stage"><canvas id="view" aria-label="DICOM-Bild"></canvas><div class="ov" id="ovTL"></div><div class="ov" id="ovTR"></div><div class="ov" id="ovBL"></div><div class="ov" id="ovBR"><span id="wlLbl"></span>  <span id="zoomLbl"></span></div><div class="err" id="err" hidden></div></div>
+<div class="slicebar"><input type="range" id="slice" min="0" max="0" value="0" aria-label="Schicht"><span id="sliceLbl">–</span></div>
+<div class="checks"><label><input type="checkbox" id="phiToggle"> Patientendaten anzeigen</label><label><input type="checkbox" id="phiExport" disabled> Name im Export einbrennen</label></div>
+<div class="mdr" style="margin:8px 0">⚠️ Vor dem Export: <strong>Bild auf eingebrannte Namen prüfen!</strong> Bei Ultraschall- und Röntgenaufnahmen steht der Name oft direkt im Pixelbild. Mit „⬛ Schwärzen“ ein Rechteck darüber ziehen – die Schwärzung wird mit exportiert.</div>
+<p style="color:var(--mu);font-size:.88rem;margin:0">🔒 <strong>Anonymer Export:</strong> PNG und JPG enthalten standardmäßig nur das Bild – ohne Name, Geburtsdatum, ID oder DICOM-Metadaten. Achtung: Manche Geräte brennen Text direkt ins Bild; den prüfen Sie bitte vor dem Weitergeben selbst. Mausrad = Schichten, <kbd>Strg</kbd>+Mausrad = Zoom, mittlere Taste = Verschieben.</p>
+<div class="tagbox"><h3>DICOM-Tags</h3><input id="tagFilter" placeholder="Tags filtern, z. B. 0008 oder Modalität"><div class="tablewrap"><table><thead><tr><th>Tag</th><th>VR</th><th>Name</th><th>Wert</th></tr></thead><tbody id="tagBody"></tbody></table></div></div>
+</div>
+</section>
+
+<div class="content"><h2>So funktioniert der Viewer</h2>
+<ol><li><strong>Laden:</strong> Ziehen Sie einzelne .dcm-Dateien oder den ganzen CD-Ordner in das Feld oben oder klicken Sie auf „Ordner / CD wählen“.</li>
+<li><strong>Auswählen:</strong> Links erscheinen alle Patienten, Studien und Serien mit Vorschaubild. Ein Klick öffnet die Serie.</li>
+<li><strong>Ansehen:</strong> Mit dem Mausrad oder dem Schieberegler blättern Sie durch die Schichten. Linke Maustaste ziehen ändert Helligkeit und Kontrast (Fenster/Level), <kbd>Strg</kbd>+Mausrad zoomt.</li>
+<li><strong>Exportieren:</strong> Das aktuelle Bild lässt sich als PNG oder JPG speichern – standardmäßig ohne Patientendaten.</li></ol>
+<div class="grid3">
+<div class="card"><h3>🔒 Bleibt auf Ihrem Gerät</h3><p>Die Seite ist rein statisch. Ihre Bilder werden per JavaScript lokal gelesen und nie an einen Server geschickt. Sie können die Seite nach dem Laden sogar offline nutzen.</p></div>
+<div class="card"><h3>🕶️ Anonymer Export</h3><p>Exportierte Bilder enthalten nur Pixel – keinen Namen, kein Geburtsdatum, keine Metadaten. Ideal, um ein Bild an Familie, Trainer oder ein Forum weiterzugeben.</p></div>
+<div class="card"><h3>💿 CD-tauglich</h3><p>DICOMDIR wird erkannt, Dateien ohne Endung (z. B. <code>IM000001</code>) werden über die DICOM-Kennung „DICM“ gefunden.</p></div></div>
+<h2>Welche Dateien werden unterstützt?</h2>
+<p>Unkomprimierte DICOM-Bilder (Implicit/Explicit VR Little Endian, Explicit VR Big Endian) in 8, 16 und 32 Bit, Graustufen und Farbe, auch Mehrbild-Dateien (Multiframe) wie Ultraschall-Clips. Dazu JPEG Baseline, das viele Praxen für Ultraschall und Fotos nutzen. Bilder in JPEG Lossless, JPEG-LS, JPEG 2000 oder RLE erkennt der Viewer und zeigt einen klaren Hinweis statt eines leeren Bildes.</p>
+<h2>Was der Viewer bewusst nicht kann</h2>
+<p>Es gibt keine Mess-, Markierungs- oder Befundwerkzeuge. Der Viewer ist zum Anschauen gedacht, etwa um vor dem Arzttermin die eigenen Bilder zu sehen. Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Die Beurteilung Ihrer Bilder gehört in ärztliche Hände.</p>
+<p>Mehr dazu: <a href="radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> · <a href="dicom-in-jpg/">DICOM in JPG umwandeln</a> · <a href="dicom-viewer-mac/">DICOM am Mac</a> · <a href="dicom-iphone/">DICOM am iPhone</a> · <a href="mrt-bilder-verstehen/">MRT-Bilder verstehen</a></p>
+<h2>Was ist DICOM?</h2>
+<p>DICOM (Digital Imaging and Communications in Medicine) ist der weltweite Standard für medizinische Bilder. Eine DICOM-Datei enthält das Bild selbst und zusätzlich Angaben wie Patientenname, Untersuchungsdatum, Gerät, Schichtdicke und Kontrastvorgaben. Deshalb öffnen normale Bildbetrachter diese Dateien nicht: Sie kennen weder das Format noch die 12- oder 16-Bit-Graustufen, die ein CT liefert.</p><h2>Häufige Fragen</h2><details class="faq"><summary>Ist der DICOM Viewer wirklich kostenlos?</summary><p>Ja. Keine Anmeldung, keine Werbung im Viewer, keine Testphase.</p></details><details class="faq"><summary>Werden meine Bilder hochgeladen?</summary><p>Nein. Die Dateien werden ausschließlich in Ihrem Browser gelesen. Es gibt keinen Server, der sie empfängt.</p></details><details class="faq"><summary>Kann ich damit eine Diagnose stellen?</summary><p>Nein. Der Viewer ist kein Medizinprodukt und hat bewusst keine Mess- oder Befundfunktionen. Er dient nur zur Ansicht.</p></details><details class="faq"><summary>Warum sehe ich nur eine Fehlermeldung?</summary><p>Vermutlich ist das Bild mit JPEG 2000, JPEG Lossless oder RLE komprimiert. Diese Formate kann der Viewer noch nicht entpacken; die Meldung nennt das genaue Format.</p></details><details class="faq"><summary>Funktioniert es auf dem Handy?</summary><p>Ja, in aktuellen Browsern auf Android und iPhone. Für große CT-Serien ist ein Computer angenehmer.</p></details></div>
+</main>
+<footer><div class="wrap">
+<p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
+<div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
+<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="https://freimoser.github.io/freimoser.de/impressum/">Datenschutz</a><span>Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt.</span></p>
+<p>Verwendet <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT-Lizenz, © Chris Hafey). Gebaut in München / Remote.</p>
+</div></footer>
+<script src="/dicom-viewer/vendor/dicomParser.min.js"></script><script src="/dicom-viewer/app.js"></script>
+</body></html>
