@@ -5,4 +5,4 @@ DICOM-Bilder und Radiologie-CDs im Browser ansehen, lokal, ohne Upload. Anonymer
 
 Live: https://freimoser.github.io/dicom-viewer/
 
-Seiten werden mit `python3 build.py` erzeugt. Verwendet dicomParser (MIT, © Chris Hafey, vendor/).
+Seiten werden mit `python3 build.py` erzeugt. Verwendet dicomParser, codec-openjpeg, codec-charls, jpeg-lossless-decoder-js und den JPEG-Decoder aus cornerstone3D (vendor/). Lizenztexte: THIRD-PARTY-LICENSES.

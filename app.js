@@ -18,8 +18,7 @@
     '1.2.840.10008.1.2.1.99': 'Deflated Explicit VR Little Endian'
   };
   const UNCOMP = ['1.2.840.10008.1.2', '1.2.840.10008.1.2.1', '1.2.840.10008.1.2.2'];
-  const JPEG_BROWSER = ['1.2.840.10008.1.2.4.50'];
-  const NAMES = {
+    const NAMES = {
     x00020010: 'Transfer Syntax', x00080020: 'Studiendatum', x00080030: 'Studienzeit', x00080060: 'Modalität',
     x00080070: 'Hersteller', x00080080: 'Einrichtung', x00080090: 'Überweiser', x00081030: 'Studienbeschreibung',
     x0008103e: 'Serienbeschreibung', x00081090: 'Gerätemodell', x00100010: 'Patientenname', x00100020: 'Patienten-ID',
@@ -107,49 +106,118 @@
   }
 
   // ---------- Pixel dekodieren ----------
-  async function decode(img) {
-    if (img.pix) return img.pix;
-    const ds = img.ds, ts = img.ts;
-    const rows = us(ds, 'x00280010', 0), cols = us(ds, 'x00280011', 0);
-    const spp = us(ds, 'x00280002', 1), bits = us(ds, 'x00280100', 16), signed = us(ds, 'x00280103', 0) === 1;
-    const photo = str(ds, 'x00280004') || 'MONOCHROME2', planar = us(ds, 'x00280006', 0);
-    const slope = num(ds, 'x00281053', 1), inter = num(ds, 'x00281052', 0);
-    if (!rows || !cols) throw new Error('Bildgröße fehlt.');
-    const n = rows * cols, pe = ds.elements.x7fe00010;
-    let out;
-    if (UNCOMP.includes(ts)) {
-      const be = ts === '1.2.840.10008.1.2.2';
-      const bpp = bits / 8, frameBytes = n * spp * bpp;
-      const start = pe.dataOffset + img.frame * frameBytes;
-      if (start + frameBytes > img.u8.length) throw new Error('Pixeldaten unvollständig.');
-      const dv = new DataView(img.u8.buffer, img.u8.byteOffset + start, frameBytes);
-      if (spp === 3) {
-        const rgb = new Uint8ClampedArray(n * 4);
-        for (let i = 0; i < n; i++) for (let c = 0; c < 3; c++) rgb[i * 4 + c] = dv.getUint8(planar ? c * n + i : i * 3 + c);
-        if (/^YBR_FULL/.test(photo)) ybr(rgb);
-        out = { rgb, rows, cols };
-      } else {
-        const v = new Float32Array(n);
-        for (let i = 0; i < n; i++) {
-          let x = bits === 8 ? (signed ? dv.getInt8(i) : dv.getUint8(i)) : bits === 32 ? (signed ? dv.getInt32(i * 4, !be) : dv.getUint32(i * 4, !be)) : (signed ? dv.getInt16(i * 2, !be) : dv.getUint16(i * 2, !be));
-          v[i] = x * slope + inter;
-        }
-        out = { v, rows, cols, mono1: photo === 'MONOCHROME1' };
+  const BASE = new URL('vendor/codecs/', document.currentScript ? document.currentScript.src : location.href).href;
+  const codecCache = {};
+  function loadScript(src, global) {
+    return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = () => res(window[global]); s.onerror = () => rej(new Error('Decoder konnte nicht geladen werden (' + src + ').')); document.head.append(s); });
+  }
+  function codec(name) {
+    if (codecCache[name]) return codecCache[name];
+    let p;
+    if (name === 'j2k') p = loadScript(BASE + 'openjpegwasm_decode.js', 'OpenJPEGWASM').then((f) => f({ locateFile: (x) => BASE + x })).then((m) => new m.J2KDecoder());
+    else if (name === 'jls') p = loadScript(BASE + 'charlswasm_decode.js', 'CharLSWASM').then((f) => f({ locateFile: (x) => BASE + x })).then((m) => new m.JpegLSDecoder());
+    else if (name === 'jll') p = import(BASE + 'jpeg-lossless.js').then((m) => m.Decoder);
+    else if (name === 'jpg') p = import(BASE + 'jpeg-baseline.js').then((m) => m.default);
+    p.catch(() => delete codecCache[name]);
+    return (codecCache[name] = p);
+  }
+  function getFrame(ds, pe, frame, frames) {
+    if (frames === 1) return dicomParser.readEncapsulatedPixelDataFromFragments(ds, pe, 0, pe.fragments.length);
+    if (pe.basicOffsetTable && pe.basicOffsetTable.length) return dicomParser.readEncapsulatedImageFrame(ds, pe, frame);
+    if (pe.fragments.length === frames) return dicomParser.readEncapsulatedPixelDataFromFragments(ds, pe, frame, 1);
+    return dicomParser.readEncapsulatedImageFrame(ds, pe, frame, dicomParser.createJPEGBasicOffsetTable(ds, pe));
+  }
+  function typed(u8, bits, signed) {
+    const b = u8.byteOffset % 2 ? u8.slice() : u8;
+    if (bits <= 8) return signed ? new Int8Array(b.buffer, b.byteOffset, b.length) : new Uint8Array(b.buffer, b.byteOffset, b.length);
+    return signed ? new Int16Array(b.buffer, b.byteOffset, b.length >> 1) : new Uint16Array(b.buffer, b.byteOffset, b.length >> 1);
+  }
+  function rle(frag, rows, cols, spp, bits) {
+    const dv = new DataView(frag.buffer, frag.byteOffset, frag.byteLength);
+    const nseg = dv.getUint32(0, true), bps = bits / 8, n = rows * cols;
+    if (nseg !== spp * bps) throw new Error('RLE-Daten passen nicht zur Bildbeschreibung.');
+    const out = new Uint8Array(n * spp * bps);
+    for (let s = 0; s < nseg; s++) {
+      const start = dv.getUint32(4 + s * 4, true), end = s + 1 < nseg ? dv.getUint32(8 + s * 4, true) : frag.length;
+      const sample = Math.floor(s / bps), byteIdx = bps - 1 - (s % bps); // MSB-Segment zuerst, Ausgabe Little Endian
+      let o = 0, i = start; const step = spp * bps, base = sample * bps + byteIdx;
+      while (i < end && o < n) {
+        const c = (frag[i++] << 24) >> 24;
+        if (c >= 0) { for (let k = 0; k <= c && o < n; k++) out[base + (o++) * step] = frag[i++]; }
+        else if (c !== -128) { const v = frag[i++]; for (let k = 0; k < 1 - c && o < n; k++) out[base + (o++) * step] = v; }
       }
-    } else if (JPEG_BROWSER.includes(ts)) {
-      let frag;
-      try {
-        const bot = pe.basicOffsetTable && pe.basicOffsetTable.length ? pe.basicOffsetTable : dicomParser.createJPEGBasicOffsetTable(ds, pe);
-        frag = dicomParser.readEncapsulatedImageFrame(ds, pe, img.frame, bot);
-      } catch (e) { frag = dicomParser.readEncapsulatedPixelDataFromFragments(ds, pe, 0); }
+    }
+    return out;
+  }
+  async function decodeCompressed(img, info) {
+    const { ds, ts } = img, pe = ds.elements.x7fe00010;
+    const frag = getFrame(ds, pe, img.frame, info.frames);
+    const { rows, cols, spp, bits, signed } = info;
+    if (ts === '1.2.840.10008.1.2.4.50' && (spp === 3 || bits === 8)) {
       const bmp = await createImageBitmap(new Blob([frag], { type: 'image/jpeg' }));
       const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
       const cx = c.getContext('2d'); cx.drawImage(bmp, 0, 0);
-      const d = cx.getImageData(0, 0, c.width, c.height).data;
-      if (spp === 3) out = { rgb: new Uint8ClampedArray(d), rows: c.height, cols: c.width };
-      else { const v = new Float32Array(c.width * c.height); for (let i = 0; i < v.length; i++) v[i] = d[i * 4] * slope + inter; out = { v, rows: c.height, cols: c.width, mono1: photo === 'MONOCHROME1' }; }
+      return { rgba: cx.getImageData(0, 0, c.width, c.height).data, rows: c.height, cols: c.width };
+    }
+    if (ts === '1.2.840.10008.1.2.5') return { data: typed(rle(frag, rows, cols, spp, bits), bits, signed), planar: 0, ybrDone: false };
+    if (ts === '1.2.840.10008.1.2.4.57' || ts === '1.2.840.10008.1.2.4.70') {
+      const D = await codec('jll'); const r = new D().decode(frag.buffer, frag.byteOffset, frag.length, bits <= 8 ? 1 : 2);
+      return { data: typed(new Uint8Array(r.buffer, r.byteOffset, r.byteLength), bits, signed), planar: 0, ybrDone: true };
+    }
+    if (ts === '1.2.840.10008.1.2.4.50' || ts === '1.2.840.10008.1.2.4.51') {
+      const J = await codec('jpg'); const j = new J(); j.parse(frag); j.colorTransform = false;
+      const d = bits > 8 ? j.getData16(cols, rows) : j.getData(cols, rows);
+      return { data: signed && bits > 8 ? new Int16Array(d.buffer, d.byteOffset, d.length) : d, planar: 0, ybrDone: false };
+    }
+    const wasm = ts === '1.2.840.10008.1.2.4.90' || ts === '1.2.840.10008.1.2.4.91' ? 'j2k' : (ts === '1.2.840.10008.1.2.4.80' || ts === '1.2.840.10008.1.2.4.81') ? 'jls' : null;
+    if (wasm) {
+      const dec = await codec(wasm);
+      dec.getEncodedBuffer(frag.length).set(frag); dec.decode();
+      const fi = dec.getFrameInfo(), raw = dec.getDecodedBuffer().slice();
+      let planar = 0;
+      if (wasm === 'jls' && fi.componentCount > 1) {
+        const im = dec.getInterleaveMode();
+        if (im === 0) planar = 1; // Zeilen-/Pixel-Interleave liefert CharLS bereits pixelweise
+      }
+      return { data: typed(raw, fi.bitsPerSample > 8 ? 16 : 8, signed), planar, rows: fi.height, cols: fi.width, ybrDone: wasm === 'j2k' };
+    }
+    throw new Error('Dieses Bild ist mit „' + (TS[ts] || ts) + '“ kodiert. Dieses Format kann der Viewer im Browser leider nicht entpacken.');
+  }
+  async function decode(img) {
+    if (img.pix) return img.pix;
+    const ds = img.ds, ts = img.ts;
+    const info = { rows: us(ds, 'x00280010', 0), cols: us(ds, 'x00280011', 0), spp: us(ds, 'x00280002', 1), bits: us(ds, 'x00280100', 16),
+      signed: us(ds, 'x00280103', 0) === 1, frames: Math.max(1, parseInt(str(ds, 'x00280008')) || 1) };
+    const photo = str(ds, 'x00280004') || 'MONOCHROME2', slope = num(ds, 'x00281053', 1), inter = num(ds, 'x00281052', 0);
+    if (!info.rows || !info.cols) throw new Error('Bildgröße fehlt.');
+    const pe = ds.elements.x7fe00010;
+    let res;
+    if (UNCOMP.includes(ts)) {
+      const be = ts === '1.2.840.10008.1.2.2', bpp = info.bits / 8, n = info.rows * info.cols, frameBytes = n * info.spp * bpp;
+      const start = pe.dataOffset + img.frame * frameBytes;
+      if (start + frameBytes > img.u8.length) throw new Error('Pixeldaten unvollständig.');
+      const dv = new DataView(img.u8.buffer, img.u8.byteOffset + start, frameBytes), cnt = n * info.spp;
+      const data = info.bits === 8 ? new (info.signed ? Int8Array : Uint8Array)(cnt) : info.bits === 32 ? new (info.signed ? Int32Array : Uint32Array)(cnt) : new (info.signed ? Int16Array : Uint16Array)(cnt);
+      for (let i = 0; i < cnt; i++) data[i] = info.bits === 8 ? (info.signed ? dv.getInt8(i) : dv.getUint8(i)) : info.bits === 32 ? (info.signed ? dv.getInt32(i * 4, !be) : dv.getUint32(i * 4, !be)) : (info.signed ? dv.getInt16(i * 2, !be) : dv.getUint16(i * 2, !be));
+      res = { data, planar: us(ds, 'x00280006', 0), ybrDone: false };
     } else {
-      throw new Error('Dieses Bild ist mit „' + (TS[ts] || ts) + '“ komprimiert. Das kann der Viewer im Browser leider noch nicht entpacken. Unterstützt: unkomprimiert und JPEG Baseline.');
+      try { res = await decodeCompressed(img, info); }
+      catch (e) { if (/kodiert|geladen/.test(e.message)) throw e; throw new Error('Das Bild („' + (TS[ts] || ts) + '“) konnte nicht entpackt werden: ' + (e.message || e)); }
+    }
+    const rows = res.rows || info.rows, cols = res.cols || info.cols, n = rows * cols;
+    let out;
+    if (res.rgba) {
+      if (info.spp === 3) out = { rgb: new Uint8ClampedArray(res.rgba), rows, cols };
+      else { const v = new Float32Array(n); for (let i = 0; i < n; i++) v[i] = res.rgba[i * 4] * slope + inter; out = { v, rows, cols, mono1: photo === 'MONOCHROME1' }; }
+    } else if (info.spp === 3) {
+      const d = res.data, rgb = new Uint8ClampedArray(n * 4), sh = info.bits > 8 ? (info.bits === 32 ? 24 : 8) : 0;
+      for (let i = 0; i < n; i++) for (let c = 0; c < 3; c++) rgb[i * 4 + c] = d[res.planar ? c * n + i : i * 3 + c] >>> sh;
+      if (/^YBR_FULL/.test(photo) && !res.ybrDone) ybr(rgb);
+      out = { rgb, rows, cols };
+    } else {
+      const d = res.data, v = new Float32Array(n);
+      for (let i = 0; i < n; i++) v[i] = d[i] * slope + inter;
+      out = { v, rows, cols, mono1: photo === 'MONOCHROME1' };
     }
     if (out.v) {
       let mn = Infinity, mx = -Infinity; for (const x of out.v) { if (x < mn) mn = x; if (x > mx) mx = x; }

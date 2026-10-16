@@ -57,7 +57,7 @@ def page(path, title, desc, h1, lead, body, faqs, extra_ld=None, tool=False):
 <p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
 <div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
 <p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="https://freimoser.github.io/freimoser.de/impressum/">Datenschutz</a><span>{MDR}</span></p>
-<p>Verwendet <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT-Lizenz, © Chris Hafey). Gebaut in München / Remote.</p>
+<p>Open-Source-Bausteine: <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT, © Chris Hafey), <a href="https://github.com/cornerstonejs/codecs">codec-openjpeg und codec-charls</a> (MIT, © Chris Hafey) mit OpenJPEG (BSD-2) und CharLS (BSD-3), <a href="https://github.com/rii-mango/JPEGLosslessDecoderJS">jpeg-lossless-decoder-js</a> (MIT, © RII-UTHSCSA), JPEG-Decoder aus cornerstone3D (MIT) auf Basis von pdf.js (Apache-2.0, © Mozilla). <a href="https://github.com/freimoser/dicom-viewer/blob/main/THIRD-PARTY-LICENSES">Alle Lizenztexte</a>. Gebaut in München / Remote.</p>
 </div></footer>
 {scripts}
 </body></html>
@@ -70,7 +70,7 @@ TOOL = '''
 <label class="btn pri">📁 Ordner / CD wählen<input type="file" id="dirIn" webkitdirectory directory multiple></label>
 <label class="btn">📄 Dateien wählen<input type="file" id="fileIn" multiple></label>
 </div>
-<p style="color:var(--mu);font-size:.88rem;margin:10px 0 0">Erkennt DICOMDIR und Dateien ohne Endung. Unterstützt unkomprimierte Bilder und JPEG Baseline.</p>
+<p style="color:var(--mu);font-size:.88rem;margin:10px 0 0">Erkennt DICOMDIR und Dateien ohne Endung. Unterstützt unkomprimierte Bilder, JPEG, JPEG Lossless, JPEG-LS, JPEG 2000 und RLE.</p>
 </section>
 <div class="msg" id="msg" hidden></div>
 <section class="app" id="app" hidden>
@@ -122,7 +122,7 @@ PAGES.append(("", page("", "DICOM Viewer kostenlos online – ohne Installation,
 <div class="card"><h3>🕶️ Anonymer Export</h3><p>Exportierte Bilder enthalten nur Pixel – keinen Namen, kein Geburtsdatum, keine Metadaten. Ideal, um ein Bild an Familie, Trainer oder ein Forum weiterzugeben.</p></div>
 <div class="card"><h3>💿 CD-tauglich</h3><p>DICOMDIR wird erkannt, Dateien ohne Endung (z. B. <code>IM000001</code>) werden über die DICOM-Kennung „DICM“ gefunden.</p></div></div>
 <h2>Welche Dateien werden unterstützt?</h2>
-<p>Unkomprimierte DICOM-Bilder (Implicit/Explicit VR Little Endian, Explicit VR Big Endian) in 8, 16 und 32 Bit, Graustufen und Farbe, auch Mehrbild-Dateien (Multiframe) wie Ultraschall-Clips. Dazu JPEG Baseline, das viele Praxen für Ultraschall und Fotos nutzen. Bilder in JPEG Lossless, JPEG-LS, JPEG 2000 oder RLE erkennt der Viewer und zeigt einen klaren Hinweis statt eines leeren Bildes.</p>
+<p>Unkomprimierte DICOM-Bilder (Implicit/Explicit VR Little Endian, Explicit VR Big Endian) in 8, 16 und 32 Bit, Graustufen und Farbe, auch Mehrbild-Dateien (Multiframe) wie Ultraschall-Clips. Dazu alle auf Radiologie-CDs üblichen Kompressionen: JPEG Baseline und Extended (8/12 Bit), JPEG Lossless, JPEG-LS (verlustfrei und nahezu verlustfrei), JPEG 2000 (verlustfrei und verlustbehaftet) sowie RLE. Die nötigen Decoder werden erst nachgeladen, wenn ein solches Bild auftaucht – ebenfalls lokal, ohne dass Bilddaten Ihr Gerät verlassen. Nur seltene Exoten (z. B. Deflate, HTJ2K, Video-Formate) zeigen einen klaren Hinweis statt eines leeren Bildes.</p>
 <h2>Was der Viewer bewusst nicht kann</h2>
 <p>Es gibt keine Mess-, Markierungs- oder Befundwerkzeuge. Der Viewer ist zum Anschauen gedacht, etwa um vor dem Arzttermin die eigenen Bilder zu sehen. {MDR} Die Beurteilung Ihrer Bilder gehört in ärztliche Hände.</p>
 <p>Mehr dazu: <a href="radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> · <a href="dicom-in-jpg/">DICOM in JPG umwandeln</a> · <a href="dicom-viewer-mac/">DICOM am Mac</a> · <a href="dicom-iphone/">DICOM am iPhone</a> · <a href="mrt-bilder-verstehen/">MRT-Bilder verstehen</a></p>
@@ -131,7 +131,7 @@ PAGES.append(("", page("", "DICOM Viewer kostenlos online – ohne Installation,
   [("Ist der DICOM Viewer wirklich kostenlos?", "Ja. Keine Anmeldung, keine Werbung im Viewer, keine Testphase."),
    ("Werden meine Bilder hochgeladen?", "Nein. Die Dateien werden ausschließlich in Ihrem Browser gelesen. Es gibt keinen Server, der sie empfängt."),
    ("Kann ich damit eine Diagnose stellen?", "Nein. Der Viewer ist kein Medizinprodukt und hat bewusst keine Mess- oder Befundfunktionen. Er dient nur zur Ansicht."),
-   ("Warum sehe ich nur eine Fehlermeldung?", "Vermutlich ist das Bild mit JPEG 2000, JPEG Lossless oder RLE komprimiert. Diese Formate kann der Viewer noch nicht entpacken; die Meldung nennt das genaue Format."),
+   ("Warum sehe ich nur eine Fehlermeldung?", "Dann ist das Bild in einem seltenen Format gespeichert, etwa Deflate, HTJ2K oder als Video (MPEG/H.264). Die Meldung nennt das genaue Format. JPEG, JPEG Lossless, JPEG-LS, JPEG 2000 und RLE werden unterstützt."),
    ("Funktioniert es auf dem Handy?", "Ja, in aktuellen Browsern auf Android und iPhone. Für große CT-Serien ist ein Computer angenehmer.")],
   APP_LD, tool=True)))
 
@@ -278,7 +278,7 @@ open("llms.txt", "w").write(f"""# DICOM Viewer
 
 > Kostenloser DICOM Viewer im Browser (deutsch). Öffnet Röntgen-, CT-, MRT- und Ultraschallbilder sowie komplette Radiologie-CDs (inkl. DICOMDIR) ohne Installation und ohne Upload. Anonymer Export als PNG/JPG. {MDR} Keine Mess- oder Befundfunktionen.
 
-Unterstützte Transfer-Syntaxen: Implicit VR Little Endian, Explicit VR Little Endian, Explicit VR Big Endian, JPEG Baseline (8 Bit). Nicht unterstützt (mit Hinweis): JPEG Lossless, JPEG-LS, JPEG 2000, RLE, Deflate.
+Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR Big Endian, JPEG Baseline (.50), JPEG Extended (.51), JPEG Lossless (.57, .70), JPEG-LS (.80, .81), JPEG 2000 (.90, .91), RLE Lossless (.5). Decoder werden bei Bedarf lokal nachgeladen. Nicht unterstützt (mit Hinweis): Deflate, HTJ2K, Video.
 
 ## Seiten
 - [DICOM Viewer kostenlos online]({BASE}): das Tool selbst

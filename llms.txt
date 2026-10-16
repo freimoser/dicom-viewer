@@ -2,7 +2,7 @@
 
 > Kostenloser DICOM Viewer im Browser (deutsch). Öffnet Röntgen-, CT-, MRT- und Ultraschallbilder sowie komplette Radiologie-CDs (inkl. DICOMDIR) ohne Installation und ohne Upload. Anonymer Export als PNG/JPG. Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Keine Mess- oder Befundfunktionen.
 
-Unterstützte Transfer-Syntaxen: Implicit VR Little Endian, Explicit VR Little Endian, Explicit VR Big Endian, JPEG Baseline (8 Bit). Nicht unterstützt (mit Hinweis): JPEG Lossless, JPEG-LS, JPEG 2000, RLE, Deflate.
+Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR Big Endian, JPEG Baseline (.50), JPEG Extended (.51), JPEG Lossless (.57, .70), JPEG-LS (.80, .81), JPEG 2000 (.90, .91), RLE Lossless (.5). Decoder werden bei Bedarf lokal nachgeladen. Nicht unterstützt (mit Hinweis): Deflate, HTJ2K, Video.
 
 ## Seiten
 - [DICOM Viewer kostenlos online](https://freimoser.github.io/dicom-viewer/): das Tool selbst
