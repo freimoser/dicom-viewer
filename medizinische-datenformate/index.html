@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medizinische Datenformate: DICOM, LDT, BDT, GDT erklärt</title>
+<meta name="description" content="DICOM, LDT, BDT und GDT verständlich erklärt: Wofür jedes Format da ist, wie die Daten durch die Praxis fließen, wo Fehler entstehen und welche Viewer helfen.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://freimoser.github.io/dicom-viewer/medizinische-datenformate/">
+<meta name="google-site-verification" content="6pYvtFCnU7UFcQFajtMSkQ7tYMy3Z_Bt7teKiT5yKNg" />
+<meta name="msvalidate.01" content="E1F30DEB311AAF5458907DB431B481AC" />
+<meta property="og:type" content="website"><meta property="og:locale" content="de_DE"><meta property="og:site_name" content="DICOM Viewer">
+<meta property="og:title" content="Medizinische Datenformate: DICOM, LDT, BDT, GDT erklärt"><meta property="og:description" content="DICOM, LDT, BDT und GDT verständlich erklärt: Wofür jedes Format da ist, wie die Daten durch die Praxis fließen, wo Fehler entstehen und welche Viewer helfen.">
+<meta property="og:url" content="https://freimoser.github.io/dicom-viewer/medizinische-datenformate/"><meta property="og:image" content="https://freimoser.github.io/dicom-viewer/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b1117">
+<link rel="icon" href="/dicom-viewer/favicon.svg" type="image/svg+xml"><link rel="icon" href="/dicom-viewer/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/dicom-viewer/apple-touch-icon.png">
+<link rel="stylesheet" href="/dicom-viewer/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist DICOM auch ein xDT-Format?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. DICOM ist ein internationaler Bildstandard mit binärem Dateiformat und eigenem Netzwerkprotokoll. xDT sind deutsche, textbasierte Austauschformate."}}, {"@type": "Question", "name": "Welches Format nutzt das Labor?", "acceptedAnswer": {"@type": "Answer", "text": "In deutschen Arztpraxen kommen Laborbefunde typischerweise als LDT-Datei."}}, {"@type": "Question", "name": "Kann ich alle Formate mit einem Programm öffnen?", "acceptedAnswer": {"@type": "Answer", "text": "Dafür gibt es spezialisierte Viewer: den DICOM Viewer für Bilder, den LDT & BDT Viewer und den GDT Viewer. Alle laufen kostenlos im Browser."}}, {"@type": "Question", "name": "Sind LDT, BDT und GDT veraltet?", "acceptedAnswer": {"@type": "Answer", "text": "Sie sind alt, aber weiterhin weit verbreitet. Moderne Standards wie FHIR kommen hinzu, ersetzen die xDT-Formate im Praxisalltag aber nicht von heute auf morgen."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Medizinische Datenformate in der Praxis: DICOM, LDT, BDT, GDT", "description": "DICOM, LDT, BDT und GDT verständlich erklärt: Wofür jedes Format da ist, wie die Daten durch die Praxis fließen, wo Fehler entstehen und welche Viewer helfen.", "inLanguage": "de-DE", "dateModified": "2026-10-17", "mainEntityOfPage": "https://freimoser.github.io/dicom-viewer/medizinische-datenformate/", "author": {"@type": "Person", "name": "Thomas Freimoser", "url": "https://freimoser.de/", "sameAs": ["https://www.linkedin.com/in/freimoser"]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "DICOM Viewer", "item": "https://freimoser.github.io/dicom-viewer/"}, {"@type": "ListItem", "position": 2, "name": "Medizinische Datenformate in der Praxis: DICOM, LDT, BDT, GDT", "item": "https://freimoser.github.io/dicom-viewer/medizinische-datenformate/"}]}</script>
+<meta name="author" content="Thomas Freimoser">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="/dicom-viewer/"><img src="/dicom-viewer/favicon.svg" alt="" width="28" height="28">DICOM Viewer</a><nav class="main"><a href="/dicom-viewer/">Viewer</a><a href="/dicom-viewer/radiologie-cd-oeffnen/">Radiologie-CD öffnen</a><a href="/dicom-viewer/dicom-in-jpg/">DICOM in JPG</a><a href="/dicom-viewer/dicom-viewer-mac/">Mac</a><a href="/dicom-viewer/dicom-iphone/">iPhone</a><a href="/dicom-viewer/mrt-bilder-verstehen/">MRT verstehen</a><a href="/dicom-viewer/medizinische-datenformate/" aria-current="page">Datenformate</a></nav></div></header>
+<main class="wrap">
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Ihre Dateien bleiben auf Ihrem Gerät – es gibt keinen Upload.</div>
+<h1>Medizinische Datenformate in der Praxis: DICOM, LDT, BDT, GDT</h1>
+<p class="lead">In einer Arztpraxis laufen täglich Daten zwischen Praxissoftware, Labor, Geräten und Radiologie hin und her. Vier Formate tauchen dabei immer wieder auf. Ein Überblick für Praxisteams, IT-Betreuer und Neugierige.</p>
+<p><a class="btn pri" href="/dicom-viewer/">DICOM Viewer öffnen →</a></p>
+<div class="content"><div class="xlink"><p><strong>Direkt ausprobieren:</strong> Dateien lokal im Browser öffnen, ohne Upload und ohne Installation.</p><div class="btns"><a class="btn pri" href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer öffnen →</a><a class="btn pri" href="https://freimoser.github.io/gdt-viewer/">GDT Viewer öffnen →</a></div></div><h2>Der Überblick</h2>
+<table><thead><tr><th>Format</th><th>Wofür</th><th>Art der Datei</th><th>Passender Viewer</th></tr></thead><tbody>
+<tr><td><strong>DICOM</strong></td><td>Medizinische Bilder: Röntgen, CT, MRT, Ultraschall</td><td>Binärdatei mit Bild und Metadaten</td><td><a href="/dicom-viewer/">DICOM Viewer</a></td></tr>
+<tr><td><strong>LDT</strong></td><td>Laboraufträge und -befunde</td><td>Textdatei im xDT-Zeilenformat</td><td><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a></td></tr>
+<tr><td><strong>BDT</strong></td><td>Behandlungsdaten, Praxisdaten-Export</td><td>Textdatei im xDT-Zeilenformat</td><td><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a></td></tr>
+<tr><td><strong>GDT</strong></td><td>Anbindung von Medizingeräten</td><td>Textdatei im xDT-Zeilenformat</td><td><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a></td></tr>
+</tbody></table>
+<h2>DICOM – der internationale Bildstandard</h2>
+<p>DICOM (Digital Imaging and Communications in Medicine) ist ein weltweiter Standard, der nicht nur ein Dateiformat, sondern auch ein Netzwerkprotokoll beschreibt. Modalitäten wie CT oder MRT schicken ihre Bilder per DICOM an ein Bildarchiv (PACS); Patientinnen und Patienten erhalten sie häufig auf CD oder per Download-Link. Eine DICOM-Datei enthält neben den Pixeldaten eine lange Liste von Angaben, die über Tag-Nummern wie <code>(0010,0010)</code> für den Patientennamen adressiert werden. Mehr dazu: <a href="/dicom-viewer/radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> und <a href="/dicom-viewer/mrt-bilder-verstehen/">MRT-Bilder verstehen</a>.</p>
+<h2>xDT – die deutschen Praxisformate</h2>
+<p>LDT, BDT und GDT sind deutsche Formate aus der xDT-Familie. Sie sind deutlich einfacher als DICOM: reine Textdateien, in denen jede Zeile aus Längenangabe, vierstelliger Feldkennung und Inhalt besteht. Diese Einfachheit ist ihr großer Vorteil – fast jede Praxissoftware kann sie schreiben und lesen, und man kann sie notfalls mit einem Texteditor untersuchen. Der Nachteil: Ohne Feldkatalog sind sie für Menschen kaum lesbar, und kleine Abweichungen von der Spezifikation führen schnell zu Importfehlern.</p>
+<h3>LDT: Labor ↔ Praxis</h3>
+<p>Die Praxis schickt einen Auftrag ans Labor, das Labor liefert den Befund als LDT-Datei zurück – meist automatisiert über eine Laborsoftware oder einen sicheren Übertragungsweg. In der Praxissoftware landen die Werte dann in der Patientenakte, inklusive Einheit, Referenzbereich und Kennzeichnung auffälliger Werte. Wie man einen solchen Befund liest, erklärt der Artikel <a href="/dicom-viewer/laborbefund-ldt-verstehen/">Laborbefunde (LDT) verstehen</a>.</p>
+<h3>BDT: Praxis ↔ Praxis</h3>
+<p>BDT wurde für den Austausch von Behandlungsdaten zwischen Praxisprogrammen entworfen. Heute begegnet man ihm vor allem beim Softwarewechsel, bei Praxisübernahmen oder wenn Daten für Auswertungen exportiert werden. Ein BDT-Export kann Stammdaten, Diagnosen, Leistungen, Befundtexte und vieles mehr enthalten – entsprechend groß und sensibel ist er.</p>
+<h3>GDT: Praxis ↔ Gerät</h3>
+<p>Über GDT ruft die Praxissoftware ein Gerät oder dessen Software auf und übergibt die Patientendaten, damit am EKG nicht noch einmal Name und Geburtsdatum eingetippt werden müssen. Nach der Untersuchung schreibt das Gerät das Ergebnis – Messwerte, Befundtext oder einen Verweis auf eine PDF – zurück. Der Austausch läuft klassisch über Dateien in einem gemeinsamen Verzeichnis.</p>
+<h2>Wie die Daten durch die Praxis fließen</h2>
+<ol><li>Eine Patientin kommt zur Vorsorge. Die Praxissoftware legt den Termin an.</li>
+<li>Für das Ruhe-EKG wird per <strong>GDT</strong> die Gerätesoftware gestartet, die Patientendaten werden übergeben, das Ergebnis kommt zurück.</li>
+<li>Blut wird abgenommen und ans Labor geschickt. Der Befund kommt als <strong>LDT</strong> zurück und wird in die Akte übernommen.</li>
+<li>Eine Überweisung zur Radiologie ergibt ein MRT. Die Bilder kommen als <strong>DICOM</strong> – auf CD, per Portal oder direkt ins Bildarchiv.</li>
+<li>Jahre später wechselt die Praxis die Software. Die Altdaten werden per <strong>BDT</strong> (oder einem herstellereigenen Weg) übertragen.</li></ol>
+<h2>Wo es in der Praxis hakt</h2>
+<ul><li><strong>Zeichensätze:</strong> Umlautfehler sind bei xDT der Klassiker, weil ältere Systeme den DOS-Zeichensatz verwenden.</li>
+<li><strong>Versionen:</strong> Von LDT gibt es mehrere Versionen (verbreitet sind LDT 2 und LDT 3), die sich im Aufbau unterscheiden. Sender und Empfänger müssen zueinander passen.</li>
+<li><strong>Herstellerdialekte:</strong> Manche Programme nutzen eigene Felder oder interpretieren Pflichtfelder großzügig.</li>
+<li><strong>Bilder ohne Viewer:</strong> Bei DICOM liegt das Problem oft nicht in der Datei, sondern darin, dass der CD-Viewer auf dem eigenen Rechner nicht startet.</li>
+<li><strong>Datenschutz bei der Fehlersuche:</strong> Wer eine fehlerhafte Datei an den Support schickt, verschickt Gesundheitsdaten. Besser: lokal ansehen, Fehler eingrenzen, nur das Nötige weitergeben.</li></ul>
+<h2>Und was ist mit HL7 und FHIR?</h2>
+<p>Im Krankenhaus ist HL7 seit Langem verbreitet, und mit FHIR gibt es einen modernen, webbasierten Standard, auf dem auch viele Anwendungen der Telematikinfrastruktur aufbauen, etwa die elektronische Patientenakte. Für die niedergelassene Praxis bleiben die xDT-Formate aber vorerst im Alltag präsent – gerade bei Labor- und Geräteanbindungen.</p>
+<h2>Die passenden Werkzeuge</h2>
+<p>Alle vier Formate lassen sich mit kostenlosen Browser-Tools ansehen, ohne dass Daten Ihr Gerät verlassen: der <a href="/dicom-viewer/">DICOM Viewer</a> für Bilder, der <a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a> für Labor- und Behandlungsdaten und der <a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a> für Gerätedaten. Eine Anleitung zum Öffnen finden Sie unter <a href="/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/">LDT, BDT und GDT Dateien öffnen</a>.</p>
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Die Tools ersetzen weder die Praxissoftware noch die ärztliche Beurteilung.</div><h2>Häufige Fragen</h2><details class="faq"><summary>Ist DICOM auch ein xDT-Format?</summary><p>Nein. DICOM ist ein internationaler Bildstandard mit binärem Dateiformat und eigenem Netzwerkprotokoll. xDT sind deutsche, textbasierte Austauschformate.</p></details><details class="faq"><summary>Welches Format nutzt das Labor?</summary><p>In deutschen Arztpraxen kommen Laborbefunde typischerweise als LDT-Datei.</p></details><details class="faq"><summary>Kann ich alle Formate mit einem Programm öffnen?</summary><p>Dafür gibt es spezialisierte Viewer: den DICOM Viewer für Bilder, den LDT &amp; BDT Viewer und den GDT Viewer. Alle laufen kostenlos im Browser.</p></details><details class="faq"><summary>Sind LDT, BDT und GDT veraltet?</summary><p>Sie sind alt, aber weiterhin weit verbreitet. Moderne Standards wie FHIR kommen hinzu, ersetzen die xDT-Formate im Praxisalltag aber nicht von heute auf morgen.</p></details></div>
+</main>
+<section class="about"><div class="wrap"><img src="/dicom-viewer/favicon.svg" alt="" width="44" height="44"><div><h2>Über den Entwickler</h2><p><strong>Thomas Freimoser</strong> entwickelt kostenlose, datensparsame Web-Tools für Praxen, Labore und Patientinnen und Patienten – alles läuft im Browser, nichts wird hochgeladen. München / Remote.</p><div class="btns"><a class="btn" href="https://freimoser.de/">🌐 freimoser.de</a><a class="btn" href="https://www.linkedin.com/in/freimoser" rel="noopener" target="_blank">in LinkedIn</a><a class="btn" href="https://freimoser.de/projekte/">Alle Projekte</a></div></div></div></section>
+<footer><div class="wrap">
+<p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
+<div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
+<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="/dicom-viewer/datenschutz/">Datenschutz</a><span>Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt.</span></p>
+<p>Open-Source-Bausteine: <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT, © Chris Hafey), <a href="https://github.com/cornerstonejs/codecs">codec-openjpeg und codec-charls</a> (MIT, © Chris Hafey) mit OpenJPEG (BSD-2) und CharLS (BSD-3), <a href="https://github.com/rii-mango/JPEGLosslessDecoderJS">jpeg-lossless-decoder-js</a> (MIT, © RII-UTHSCSA), JPEG-Decoder aus cornerstone3D (MIT) auf Basis von pdf.js (Apache-2.0, © Mozilla). <a href="https://github.com/freimoser/dicom-viewer/blob/main/THIRD-PARTY-LICENSES">Alle Lizenztexte</a>. Gebaut in München / Remote.</p>
+</div></footer>
+
+
+</body></html>

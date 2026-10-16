@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LDT, BDT und GDT Dateien öffnen – kostenlos im Browser</title>
+<meta name="description" content="LDT-, BDT- und GDT-Dateien öffnen und lesen: Was die xDT-Formate sind, wie sie aufgebaut sind, typische Fehler und wie Sie sie kostenlos im Browser ansehen.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://freimoser.github.io/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/">
+<meta name="google-site-verification" content="6pYvtFCnU7UFcQFajtMSkQ7tYMy3Z_Bt7teKiT5yKNg" />
+<meta name="msvalidate.01" content="E1F30DEB311AAF5458907DB431B481AC" />
+<meta property="og:type" content="website"><meta property="og:locale" content="de_DE"><meta property="og:site_name" content="DICOM Viewer">
+<meta property="og:title" content="LDT, BDT und GDT Dateien öffnen – kostenlos im Browser"><meta property="og:description" content="LDT-, BDT- und GDT-Dateien öffnen und lesen: Was die xDT-Formate sind, wie sie aufgebaut sind, typische Fehler und wie Sie sie kostenlos im Browser ansehen.">
+<meta property="og:url" content="https://freimoser.github.io/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/"><meta property="og:image" content="https://freimoser.github.io/dicom-viewer/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b1117">
+<link rel="icon" href="/dicom-viewer/favicon.svg" type="image/svg+xml"><link rel="icon" href="/dicom-viewer/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/dicom-viewer/apple-touch-icon.png">
+<link rel="stylesheet" href="/dicom-viewer/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Kann ich eine LDT-Datei in Excel öffnen?", "acceptedAnswer": {"@type": "Answer", "text": "Nicht sinnvoll. Excel erkennt den Zeilenaufbau aus Länge, Feldkennung und Inhalt nicht. Ein spezieller Viewer übersetzt die Feldnummern in Klartext."}}, {"@type": "Question", "name": "Werden meine Dateien hochgeladen?", "acceptedAnswer": {"@type": "Answer", "text": "Nein. LDT & BDT Viewer und GDT Viewer lesen die Dateien lokal im Browser."}}, {"@type": "Question", "name": "Warum sind die Umlaute kaputt?", "acceptedAnswer": {"@type": "Answer", "text": "Die Datei ist vermutlich im DOS-Zeichensatz (Codepage 437) oder in ISO 8859-1 gespeichert. Ein xDT-Viewer berücksichtigt das automatisch bzw. anhand von Feld 9206."}}, {"@type": "Question", "name": "Was ist der Unterschied zwischen BDT und GDT?", "acceptedAnswer": {"@type": "Answer", "text": "BDT dient dem Austausch kompletter Behandlungsdaten zwischen Praxisprogrammen, GDT der Kommunikation zwischen Praxisprogramm und einzelnen Medizingeräten."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "LDT, BDT und GDT Dateien öffnen", "description": "LDT-, BDT- und GDT-Dateien öffnen und lesen: Was die xDT-Formate sind, wie sie aufgebaut sind, typische Fehler und wie Sie sie kostenlos im Browser ansehen.", "inLanguage": "de-DE", "dateModified": "2026-10-17", "mainEntityOfPage": "https://freimoser.github.io/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/", "author": {"@type": "Person", "name": "Thomas Freimoser", "url": "https://freimoser.de/", "sameAs": ["https://www.linkedin.com/in/freimoser"]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "DICOM Viewer", "item": "https://freimoser.github.io/dicom-viewer/"}, {"@type": "ListItem", "position": 2, "name": "LDT, BDT und GDT Dateien öffnen", "item": "https://freimoser.github.io/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/"}]}</script>
+<meta name="author" content="Thomas Freimoser">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="/dicom-viewer/"><img src="/dicom-viewer/favicon.svg" alt="" width="28" height="28">DICOM Viewer</a><nav class="main"><a href="/dicom-viewer/">Viewer</a><a href="/dicom-viewer/radiologie-cd-oeffnen/">Radiologie-CD öffnen</a><a href="/dicom-viewer/dicom-in-jpg/">DICOM in JPG</a><a href="/dicom-viewer/dicom-viewer-mac/">Mac</a><a href="/dicom-viewer/dicom-iphone/">iPhone</a><a href="/dicom-viewer/mrt-bilder-verstehen/">MRT verstehen</a><a href="/dicom-viewer/medizinische-datenformate/">Datenformate</a></nav></div></header>
+<main class="wrap">
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Ihre Dateien bleiben auf Ihrem Gerät – es gibt keinen Upload.</div>
+<h1>LDT, BDT und GDT Dateien öffnen</h1>
+<p class="lead">Eine Datei mit der Endung .ldt, .bdt oder .gdt lässt sich per Doppelklick nicht sinnvoll öffnen? Hier steht, was in diesen Praxis-Dateien steckt, wie man sie liest und welche Werkzeuge helfen.</p>
+<p><a class="btn pri" href="/dicom-viewer/">DICOM Viewer öffnen →</a></p>
+<div class="content"><div class="xlink"><p><strong>Direkt ausprobieren:</strong> Dateien lokal im Browser öffnen, ohne Upload und ohne Installation.</p><div class="btns"><a class="btn pri" href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer öffnen →</a><a class="btn pri" href="https://freimoser.github.io/gdt-viewer/">GDT Viewer öffnen →</a></div></div><h2>Die xDT-Familie in einem Satz</h2>
+<p>LDT, BDT und GDT gehören zur sogenannten <strong>xDT-Familie</strong>: Datenaustauschformate, die von der Kassenärztlichen Bundesvereinigung (KBV) bzw. – im Fall von GDT – vom Qualitätsring Medizinische Software (QMS) beschrieben werden. Sie stammen aus einer Zeit, in der Daten zwischen Programmen per Diskette oder Dateiordner ausgetauscht wurden, und sind bis heute in vielen Arztpraxen im Einsatz. Das „x“ steht dabei als Platzhalter: <strong>L</strong>DT für Labor, <strong>B</strong>DT für Behandlungsdaten, <strong>G</strong>DT für Geräte.</p>
+<h2>Welche Datei ist wofür?</h2>
+<table><thead><tr><th>Format</th><th>Langname</th><th>Typischer Einsatz</th></tr></thead><tbody>
+<tr><td>LDT</td><td>Labordatenträger</td><td>Laboraufträge und Laborbefunde zwischen Praxis und Labor</td></tr>
+<tr><td>BDT</td><td>Behandlungsdatenträger</td><td>Export von Patienten- und Behandlungsdaten, etwa beim Wechsel der Praxissoftware</td></tr>
+<tr><td>GDT</td><td>Gerätedatenträger</td><td>Kopplung von Medizingeräten (EKG, Spirometrie, Ultraschall, Augenmessgeräte …) an die Praxissoftware</td></tr>
+</tbody></table>
+<h2>So ist eine xDT-Datei aufgebaut</h2>
+<p>Alle drei Formate teilen dasselbe Grundprinzip: Es sind reine Textdateien, die Zeile für Zeile gelesen werden. Jede Zeile hat einen festen Aufbau:</p>
+<ul><li><strong>3 Ziffern Zeilenlänge</strong> – die Länge der gesamten Zeile in Bytes, einschließlich der Zeilenendezeichen,</li>
+<li><strong>4 Ziffern Feldkennung</strong> – eine Nummer, die festlegt, was in der Zeile steht,</li>
+<li><strong>der Inhalt</strong> – etwa ein Name, ein Datum oder ein Messwert,</li>
+<li>und am Ende <strong>Wagenrücklauf und Zeilenvorschub</strong> (CR LF).</li></ul>
+<p>Eine Zeile wie <code>0193101Mustermann</code> bedeutet also: 19 Bytes lang, Feld 3101 (Nachname), Inhalt „Mustermann“. Die Rechnung: 3 + 4 + 10 Zeichen + 2 Zeilenendezeichen = 19. Stimmt die Längenangabe nicht, ist die Zeile streng genommen fehlerhaft. Genau solche Abweichungen sind eine häufige Ursache, wenn ein Import in der Praxissoftware scheitert.</p>
+<p>Mehrere Zeilen bilden einen <strong>Satz</strong>. Welche Art Satz vorliegt, steht im Feld <code>8000</code> (Satzart). Bei GDT zeigt zum Beispiel die Satzart 6302 an, dass die Praxissoftware eine neue Untersuchung anfordert, und 6310, dass ein Gerät Untersuchungsdaten zurückschickt.</p>
+<h2>Warum normale Programme scheitern</h2>
+<p>Technisch könnte man eine xDT-Datei im Editor öffnen. Praktisch hilft das wenig:</p>
+<ul><li><strong>Kryptische Nummern:</strong> Statt „Geburtsdatum“ steht dort <code>3103</code>. Ohne Feldkatalog versteht man den Inhalt nicht.</li>
+<li><strong>Zeichensatz:</strong> Ältere Dateien sind oft im DOS-Zeichensatz (Codepage 437) oder in ISO 8859-1 gespeichert. Umlaute erscheinen im Windows-Editor dann als Sonderzeichen. Welcher Zeichensatz gilt, steht meist im Feld <code>9206</code>.</li>
+<li><strong>Endungen variieren:</strong> Viele Systeme verwenden statt .ldt oder .gdt eigene Endungen oder nummerierte Dateien. Der Inhalt ist trotzdem xDT.</li>
+<li><strong>Große Dateien:</strong> Ein BDT-Export einer ganzen Praxis kann sehr umfangreich sein. Ein Editor zeigt dann tausende Zeilen ohne Struktur.</li></ul>
+<h2>Schritt für Schritt: Datei im Browser ansehen</h2>
+<ol><li>Für <strong>LDT oder BDT</strong> den <a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a> öffnen, für <strong>GDT</strong> den <a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a>.</li>
+<li>Die Datei per Drag &amp; Drop auf die Seite ziehen oder über den Dateidialog wählen.</li>
+<li>Der Viewer übersetzt die Feldkennungen in Klartext, gruppiert die Sätze und zeigt Auffälligkeiten wie falsche Zeilenlängen an.</li>
+<li>Bei Bedarf Patientendaten ausblenden, bevor Sie einen Screenshot an den Software-Support schicken.</li></ol>
+<p>Die Dateien werden dabei ausschließlich in Ihrem Browser gelesen. Das ist bei Gesundheitsdaten kein Nebendetail: Laborbefunde und Behandlungsdaten gehören zu den besonders geschützten Kategorien personenbezogener Daten nach Art. 9 DSGVO. Ein Online-Konverter, der die Datei auf einen fremden Server lädt, ist für den Praxisalltag deshalb meist keine gute Idee.</p>
+<h2>Typische Situationen aus der Praxis</h2>
+<h3>Der Laborimport bricht ab</h3>
+<p>Die Praxissoftware meldet beim Einlesen eines Laborbefunds einen Fehler. Im Viewer sieht man oft sofort, woran es liegt: eine Zeile mit falscher Längenangabe, ein unerwarteter Zeichensatz oder ein fehlendes Pflichtfeld. Mit dieser Information kann der Support des Labors oder des Softwareherstellers deutlich schneller helfen.</p>
+<h3>Praxisübernahme oder Softwarewechsel</h3>
+<p>Beim Wechsel der Praxissoftware wird häufig ein BDT-Export erzeugt. Vor dem Import lohnt ein Blick hinein: Sind alle Patienten enthalten? Sind die Umlaute korrekt? Fehlen Diagnosen oder Leistungsziffern? Eine Stichprobe im Viewer erspart böse Überraschungen nach der Umstellung.</p>
+<h3>Ein Gerät überträgt nichts</h3>
+<p>Wenn EKG oder Lungenfunktion keine Ergebnisse an die Praxissoftware zurückliefern, liegt das häufig an der GDT-Konfiguration: falsches Austauschverzeichnis, abweichende Dateinamen oder Kürzel für Sender und Empfänger. Im <a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a> erkennt man, ob die Anforderung (6302) überhaupt beim Gerät ankommt und was das Gerät zurückschreibt.</p>
+<h2>Und DICOM?</h2>
+<p>Bilder aus Röntgen, CT, MRT oder Ultraschall werden nicht als xDT, sondern als <strong>DICOM</strong> gespeichert. Dafür ist der <a href="/dicom-viewer/">DICOM Viewer</a> auf dieser Seite gedacht. Wie die Formate zusammenspielen, erklärt der Artikel <a href="/dicom-viewer/medizinische-datenformate/">Medizinische Datenformate in der Praxis</a>.</p>
+<div class="mdr" role="note">⚠️ Die verlinkten Viewer dienen der Ansicht und Fehlersuche. Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt.</div><h2>Häufige Fragen</h2><details class="faq"><summary>Kann ich eine LDT-Datei in Excel öffnen?</summary><p>Nicht sinnvoll. Excel erkennt den Zeilenaufbau aus Länge, Feldkennung und Inhalt nicht. Ein spezieller Viewer übersetzt die Feldnummern in Klartext.</p></details><details class="faq"><summary>Werden meine Dateien hochgeladen?</summary><p>Nein. LDT &amp; BDT Viewer und GDT Viewer lesen die Dateien lokal im Browser.</p></details><details class="faq"><summary>Warum sind die Umlaute kaputt?</summary><p>Die Datei ist vermutlich im DOS-Zeichensatz (Codepage 437) oder in ISO 8859-1 gespeichert. Ein xDT-Viewer berücksichtigt das automatisch bzw. anhand von Feld 9206.</p></details><details class="faq"><summary>Was ist der Unterschied zwischen BDT und GDT?</summary><p>BDT dient dem Austausch kompletter Behandlungsdaten zwischen Praxisprogrammen, GDT der Kommunikation zwischen Praxisprogramm und einzelnen Medizingeräten.</p></details></div>
+</main>
+<section class="about"><div class="wrap"><img src="/dicom-viewer/favicon.svg" alt="" width="44" height="44"><div><h2>Über den Entwickler</h2><p><strong>Thomas Freimoser</strong> entwickelt kostenlose, datensparsame Web-Tools für Praxen, Labore und Patientinnen und Patienten – alles läuft im Browser, nichts wird hochgeladen. München / Remote.</p><div class="btns"><a class="btn" href="https://freimoser.de/">🌐 freimoser.de</a><a class="btn" href="https://www.linkedin.com/in/freimoser" rel="noopener" target="_blank">in LinkedIn</a><a class="btn" href="https://freimoser.de/projekte/">Alle Projekte</a></div></div></div></section>
+<footer><div class="wrap">
+<p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
+<div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
+<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="/dicom-viewer/datenschutz/">Datenschutz</a><span>Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt.</span></p>
+<p>Open-Source-Bausteine: <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT, © Chris Hafey), <a href="https://github.com/cornerstonejs/codecs">codec-openjpeg und codec-charls</a> (MIT, © Chris Hafey) mit OpenJPEG (BSD-2) und CharLS (BSD-3), <a href="https://github.com/rii-mango/JPEGLosslessDecoderJS">jpeg-lossless-decoder-js</a> (MIT, © RII-UTHSCSA), JPEG-Decoder aus cornerstone3D (MIT) auf Basis von pdf.js (Apache-2.0, © Mozilla). <a href="https://github.com/freimoser/dicom-viewer/blob/main/THIRD-PARTY-LICENSES">Alle Lizenztexte</a>. Gebaut in München / Remote.</p>
+</div></footer>
+
+
+</body></html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laborbefunde (LDT) verstehen – Felder, Werte, Kennzeichen</title>
+<meta name="description" content="Laborbefund als LDT-Datei verstehen: Aufbau, wichtige Felder für Test, Ergebnis, Einheit und Referenzbereich, Kennzeichen auffälliger Werte und typische Stolperfallen.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://freimoser.github.io/dicom-viewer/laborbefund-ldt-verstehen/">
+<meta name="google-site-verification" content="6pYvtFCnU7UFcQFajtMSkQ7tYMy3Z_Bt7teKiT5yKNg" />
+<meta name="msvalidate.01" content="E1F30DEB311AAF5458907DB431B481AC" />
+<meta property="og:type" content="website"><meta property="og:locale" content="de_DE"><meta property="og:site_name" content="DICOM Viewer">
+<meta property="og:title" content="Laborbefunde (LDT) verstehen – Felder, Werte, Kennzeichen"><meta property="og:description" content="Laborbefund als LDT-Datei verstehen: Aufbau, wichtige Felder für Test, Ergebnis, Einheit und Referenzbereich, Kennzeichen auffälliger Werte und typische Stolperfallen.">
+<meta property="og:url" content="https://freimoser.github.io/dicom-viewer/laborbefund-ldt-verstehen/"><meta property="og:image" content="https://freimoser.github.io/dicom-viewer/icon-512.png">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#0b1117">
+<link rel="icon" href="/dicom-viewer/favicon.svg" type="image/svg+xml"><link rel="icon" href="/dicom-viewer/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/dicom-viewer/apple-touch-icon.png">
+<link rel="stylesheet" href="/dicom-viewer/styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Was bedeutet das H hinter einem Laborwert?", "acceptedAnswer": {"@type": "Answer", "text": "H steht üblicherweise für einen Wert oberhalb des vom Labor angegebenen Referenzbereichs, L für einen Wert darunter. Über die medizinische Bedeutung sagt das allein nichts aus."}}, {"@type": "Question", "name": "Warum unterscheiden sich Referenzbereiche zwischen Laboren?", "acceptedAnswer": {"@type": "Answer", "text": "Sie hängen von Messmethode, Geräten und Referenzpopulation ab und werden deshalb vom jeweiligen Labor mitgeliefert."}}, {"@type": "Question", "name": "Kann ich eine LDT-Datei selbst lesen?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, mit einem LDT-Viewer, der die Feldnummern in Klartext übersetzt. Der LDT & BDT Viewer läuft kostenlos und ohne Upload im Browser."}}, {"@type": "Question", "name": "Welche LDT-Version habe ich?", "acceptedAnswer": {"@type": "Answer", "text": "Die Version steht im Kopfsatz der Datei. Der Viewer zeigt sie direkt an."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Laborbefunde (LDT) verstehen", "description": "Laborbefund als LDT-Datei verstehen: Aufbau, wichtige Felder für Test, Ergebnis, Einheit und Referenzbereich, Kennzeichen auffälliger Werte und typische Stolperfallen.", "inLanguage": "de-DE", "dateModified": "2026-10-17", "mainEntityOfPage": "https://freimoser.github.io/dicom-viewer/laborbefund-ldt-verstehen/", "author": {"@type": "Person", "name": "Thomas Freimoser", "url": "https://freimoser.de/", "sameAs": ["https://www.linkedin.com/in/freimoser"]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "DICOM Viewer", "item": "https://freimoser.github.io/dicom-viewer/"}, {"@type": "ListItem", "position": 2, "name": "Laborbefunde (LDT) verstehen", "item": "https://freimoser.github.io/dicom-viewer/laborbefund-ldt-verstehen/"}]}</script>
+<meta name="author" content="Thomas Freimoser">
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="/dicom-viewer/"><img src="/dicom-viewer/favicon.svg" alt="" width="28" height="28">DICOM Viewer</a><nav class="main"><a href="/dicom-viewer/">Viewer</a><a href="/dicom-viewer/radiologie-cd-oeffnen/">Radiologie-CD öffnen</a><a href="/dicom-viewer/dicom-in-jpg/">DICOM in JPG</a><a href="/dicom-viewer/dicom-viewer-mac/">Mac</a><a href="/dicom-viewer/dicom-iphone/">iPhone</a><a href="/dicom-viewer/mrt-bilder-verstehen/">MRT verstehen</a><a href="/dicom-viewer/medizinische-datenformate/">Datenformate</a></nav></div></header>
+<main class="wrap">
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Ihre Dateien bleiben auf Ihrem Gerät – es gibt keinen Upload.</div>
+<h1>Laborbefunde (LDT) verstehen</h1>
+<p class="lead">Was steht eigentlich in einer LDT-Datei aus dem Labor, und wie wird daraus der Befund in der Praxissoftware? Eine Lesehilfe für Praxisteams, IT-Betreuer und alle, die bei einem Importfehler genauer hinschauen müssen.</p>
+<p><a class="btn pri" href="/dicom-viewer/">DICOM Viewer öffnen →</a></p>
+<div class="content"><div class="xlink"><p><strong>Direkt ausprobieren:</strong> Dateien lokal im Browser öffnen, ohne Upload und ohne Installation.</p><div class="btns"><a class="btn pri" href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer öffnen →</a><a class="btn pri" href="https://freimoser.github.io/gdt-viewer/">GDT Viewer öffnen →</a></div></div><div class="card"><strong>Wichtig:</strong> Diese Seite erklärt das Dateiformat, nicht die medizinische Bedeutung einzelner Werte. Ob ein Laborwert behandlungsbedürftig ist, beurteilt die behandelnde Ärztin oder der behandelnde Arzt.</div>
+<h2>Vom Röhrchen zur Datei</h2>
+<p>Wenn eine Praxis Blut ins Labor schickt, geht in der Regel ein Auftrag mit – elektronisch oder auf einem Anforderungsschein. Das Labor misst, prüft die Ergebnisse und erzeugt einen Befund. Damit die Werte nicht abgetippt werden müssen, wird der Befund als <strong>LDT-Datei</strong> (Labordatenträger) an die Praxis übermittelt. Die Praxissoftware liest die Datei ein und ordnet die Werte dem richtigen Patienten zu.</p>
+<h2>Der Grundaufbau</h2>
+<p>Eine LDT-Datei ist eine Textdatei im xDT-Format: Jede Zeile beginnt mit drei Ziffern für die Zeilenlänge und vier Ziffern für die Feldkennung, danach folgt der Inhalt. Die Datei ist in Sätze gegliedert. Grob gibt es</p>
+<ul><li>einen <strong>Kopfsatz</strong> mit Angaben zum Labor, zum Empfänger und zur Datei (zum Beispiel Erstellungsdatum und Version),</li>
+<li>einen oder mehrere <strong>Befundsätze</strong>, je einen pro Auftrag bzw. Patient,</li>
+<li>einen <strong>Abschlusssatz</strong>, der die Datei beendet.</li></ul>
+<p>In LDT 3 sind die Inhalte zusätzlich in Objekte gegliedert, das Grundprinzip der Zeilen bleibt aber gleich. Welche Version vorliegt, steht im Kopf der Datei – das ist bei Importproblemen die erste Frage, die der Support stellt.</p>
+<h2>Die wichtigsten Felder eines Ergebnisses</h2>
+<p>Für jeden Test enthält der Befund eine Gruppe von Zeilen. In LDT 2 sind das zum Beispiel:</p>
+<table><thead><tr><th>Feld</th><th>Bedeutung</th><th>Beispielinhalt</th></tr></thead><tbody>
+<tr><td>8410</td><td>Test-Ident (Kurzbezeichnung)</td><td>HB</td></tr>
+<tr><td>8411</td><td>Testbezeichnung</td><td>Hämoglobin</td></tr>
+<tr><td>8420</td><td>Ergebniswert</td><td>13,9</td></tr>
+<tr><td>8421</td><td>Einheit</td><td>g/dl</td></tr>
+<tr><td>8460</td><td>Normalwert als Text</td><td>12,0 – 16,0</td></tr>
+<tr><td>8422</td><td>Grenzwertindikator</td><td>z. B. H für erhöht, L für erniedrigt</td></tr>
+<tr><td>8480</td><td>Ergebnistext (Freitext)</td><td>Kommentar des Labors</td></tr>
+</tbody></table>
+<p>Die genauen Feldnummern und Pflichtfelder hängen von der LDT-Version ab und sind im Feldkatalog der KBV beschrieben. Die Beispielwerte oben sind frei gewählt und dienen nur der Veranschaulichung.</p>
+<h2>Referenzbereiche richtig lesen</h2>
+<p>Ein Laborwert ist für sich allein wenig aussagekräftig. Erst der Referenzbereich zeigt, wo er einzuordnen ist – und dieser Bereich ist nicht universell: Er hängt von der Messmethode des Labors, oft auch von Alter und Geschlecht ab. Deshalb liefert das Labor ihn im Befund mit. Zwei Labore können für denselben Test unterschiedliche Referenzbereiche und sogar unterschiedliche Einheiten angeben (zum Beispiel mg/dl gegenüber mmol/l). Werte aus verschiedenen Laboren sollte man daher nur mit Vorsicht direkt vergleichen.</p>
+<h2>Kennzeichen für auffällige Werte</h2>
+<p>Damit auffällige Werte in der Praxissoftware hervorgehoben werden, setzt das Labor einen Grenzwertindikator. Üblich sind Buchstaben wie <strong>H</strong> (hoch) und <strong>L</strong> (niedrig), oft auch abgestufte Kennzeichen für stark abweichende Werte. Wichtig: Ein Kennzeichen bedeutet nur, dass der Wert außerhalb des angegebenen Bereichs liegt. Es sagt nichts darüber, ob das medizinisch relevant ist.</p>
+<h2>Freitexte, Anhänge und Folgebefunde</h2>
+<p>Nicht jedes Ergebnis ist eine Zahl. Mikrobiologische Befunde, Antibiogramme oder Kommentare des Labors stehen häufig als Freitext in der Datei. Außerdem kennt LDT den Unterschied zwischen <strong>Teil- und Endbefunden</strong>: Manche Werte liegen nach Stunden vor, andere erst nach Tagen. Das Labor schickt dann mehrere Dateien zum selben Auftrag. Wer sich wundert, warum ein Befund „doppelt“ auftaucht, findet die Erklärung meist im Befundstatus.</p>
+<h2>Typische Stolperfallen beim Import</h2>
+<ul><li><strong>Falsche Zeilenlänge:</strong> Wird eine Datei nachträglich bearbeitet oder mit falscher Kodierung gespeichert, stimmen die Längenangaben nicht mehr.</li>
+<li><strong>Zeichensatz:</strong> Umlaute in Patientennamen oder Testbezeichnungen werden falsch dargestellt, wenn Sender und Empfänger unterschiedliche Zeichensätze annehmen.</li>
+<li><strong>Zuordnung zum Patienten:</strong> Wenn Patientennummer, Name oder Geburtsdatum nicht zu den Daten in der Praxissoftware passen, landet der Befund in einer Warteschlange zur manuellen Zuordnung.</li>
+<li><strong>Versionskonflikt:</strong> Eine LDT-3-Datei kann nicht von jeder Software gelesen werden, die nur LDT 2 erwartet – und umgekehrt.</li>
+<li><strong>Dezimaltrennzeichen:</strong> Komma oder Punkt – bei der Auswertung außerhalb der Praxissoftware führt das schnell zu falschen Zahlen.</li></ul>
+<h2>Selbst nachsehen – ohne Upload</h2>
+<p>Im <a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a> laden Sie eine LDT-Datei per Drag &amp; Drop. Der Viewer übersetzt Feldkennungen in Klartext, stellt die Ergebnisse tabellarisch mit Einheit und Referenzbereich dar und weist auf formale Fehler hin. Da die Datei nur lokal gelesen wird, eignet sich das auch für echte Befunde – etwa um vor einem Anruf beim Labor-Support zu sehen, welche Zeile das Problem verursacht. Hintergründe zu den anderen Formaten finden Sie unter <a href="/dicom-viewer/medizinische-datenformate/">DICOM, LDT, BDT und GDT im Vergleich</a>.</p>
+<div class="mdr" role="note">⚠️ Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt. Laborwerte immer ärztlich beurteilen lassen.</div><h2>Häufige Fragen</h2><details class="faq"><summary>Was bedeutet das H hinter einem Laborwert?</summary><p>H steht üblicherweise für einen Wert oberhalb des vom Labor angegebenen Referenzbereichs, L für einen Wert darunter. Über die medizinische Bedeutung sagt das allein nichts aus.</p></details><details class="faq"><summary>Warum unterscheiden sich Referenzbereiche zwischen Laboren?</summary><p>Sie hängen von Messmethode, Geräten und Referenzpopulation ab und werden deshalb vom jeweiligen Labor mitgeliefert.</p></details><details class="faq"><summary>Kann ich eine LDT-Datei selbst lesen?</summary><p>Ja, mit einem LDT-Viewer, der die Feldnummern in Klartext übersetzt. Der LDT &amp; BDT Viewer läuft kostenlos und ohne Upload im Browser.</p></details><details class="faq"><summary>Welche LDT-Version habe ich?</summary><p>Die Version steht im Kopfsatz der Datei. Der Viewer zeigt sie direkt an.</p></details></div>
+</main>
+<section class="about"><div class="wrap"><img src="/dicom-viewer/favicon.svg" alt="" width="44" height="44"><div><h2>Über den Entwickler</h2><p><strong>Thomas Freimoser</strong> entwickelt kostenlose, datensparsame Web-Tools für Praxen, Labore und Patientinnen und Patienten – alles läuft im Browser, nichts wird hochgeladen. München / Remote.</p><div class="btns"><a class="btn" href="https://freimoser.de/">🌐 freimoser.de</a><a class="btn" href="https://www.linkedin.com/in/freimoser" rel="noopener" target="_blank">in LinkedIn</a><a class="btn" href="https://freimoser.de/projekte/">Alle Projekte</a></div></div></div></section>
+<footer><div class="wrap">
+<p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
+<div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
+<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="/dicom-viewer/datenschutz/">Datenschutz</a><span>Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt.</span></p>
+<p>Open-Source-Bausteine: <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT, © Chris Hafey), <a href="https://github.com/cornerstonejs/codecs">codec-openjpeg und codec-charls</a> (MIT, © Chris Hafey) mit OpenJPEG (BSD-2) und CharLS (BSD-3), <a href="https://github.com/rii-mango/JPEGLosslessDecoderJS">jpeg-lossless-decoder-js</a> (MIT, © RII-UTHSCSA), JPEG-Decoder aus cornerstone3D (MIT) auf Basis von pdf.js (Apache-2.0, © Mozilla). <a href="https://github.com/freimoser/dicom-viewer/blob/main/THIRD-PARTY-LICENSES">Alle Lizenztexte</a>. Gebaut in München / Remote.</p>
+</div></footer>
+
+
+</body></html>

@@ -3,10 +3,29 @@
 import json, os, html
 BASE = "https://freimoser.github.io/dicom-viewer/"
 P = "/dicom-viewer/"
-LASTMOD = "2026-10-16"
+LASTMOD = "2026-10-17"
+GA_ID = ""  # GA4 Mess-ID, z. B. "G-XXXXXXX". Leer = kein Analytics, kein Banner.
+LINKEDIN = "https://www.linkedin.com/in/freimoser"
 MDR = "Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt."
 NAV = [("", "Viewer"), ("radiologie-cd-oeffnen/", "Radiologie-CD öffnen"), ("dicom-in-jpg/", "DICOM in JPG"),
-       ("dicom-viewer-mac/", "Mac"), ("dicom-iphone/", "iPhone"), ("mrt-bilder-verstehen/", "MRT verstehen")]
+       ("dicom-viewer-mac/", "Mac"), ("dicom-iphone/", "iPhone"), ("mrt-bilder-verstehen/", "MRT verstehen"), ("medizinische-datenformate/", "Datenformate")]
+
+def ga_snippet():
+    if not GA_ID:
+        return ""
+    return f'''<div id="cc" class="cc" hidden><p>Darf ich mit Google Analytics anonym messen, welche Seiten genutzt werden? Ihre DICOM-Bilder werden dabei nie erfasst. <a href="{P}datenschutz/">Datenschutz</a></p><div class="btns"><button class="btn pri" type="button" id="ccYes">Zustimmen</button><button class="btn" type="button" id="ccNo">Ablehnen</button></div></div>
+<script>(function(){{var K="dv-consent",v=localStorage.getItem(K),b=document.getElementById("cc");
+function load(){{window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}window.gtag=gtag;
+gtag("consent","default",{{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"granted"}});
+gtag("js",new Date());gtag("config","{GA_ID}",{{anonymize_ip:true}});var s=document.createElement("script");s.async=1;s.src="https://www.googletagmanager.com/gtag/js?id={GA_ID}";document.head.appendChild(s);}}
+if(v==="yes")load();else if(v!=="no")b.hidden=false;
+document.getElementById("ccYes").onclick=function(){{localStorage.setItem(K,"yes");b.hidden=true;load();}};
+document.getElementById("ccNo").onclick=function(){{localStorage.setItem(K,"no");b.hidden=true;}};
+window.dvConsentReset=function(){{localStorage.removeItem(K);b.hidden=false;}};}})();</script>'''
+
+CROSS = '''<aside class="xlink"><h2>Auch für Praxis-Dateien: LDT, BDT und GDT</h2><p>Laborbefunde, Praxisdaten-Exporte und Gerätedaten liegen nicht als DICOM vor, sondern in den xDT-Formaten der KBV. Dafür gibt es zwei passende kostenlose Viewer – ebenfalls ohne Upload:</p><div class="btns"><a class="btn pri" href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer öffnen →</a><a class="btn pri" href="https://freimoser.github.io/gdt-viewer/">GDT Viewer öffnen →</a></div><p class="small">Hintergrund: <a href="/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/">LDT, BDT und GDT öffnen</a> · <a href="/dicom-viewer/laborbefund-ldt-verstehen/">Laborbefunde (LDT) verstehen</a> · <a href="/dicom-viewer/medizinische-datenformate/">DICOM, LDT, BDT, GDT im Vergleich</a></p></aside>'''
+
+ABOUT = f'''<section class="about"><div class="wrap"><img src="/dicom-viewer/favicon.svg" alt="" width="44" height="44"><div><h2>Über den Entwickler</h2><p><strong>Thomas Freimoser</strong> entwickelt kostenlose, datensparsame Web-Tools für Praxen, Labore und Patientinnen und Patienten – alles läuft im Browser, nichts wird hochgeladen. München / Remote.</p><div class="btns"><a class="btn" href="https://freimoser.de/">🌐 freimoser.de</a><a class="btn" href="{LINKEDIN}" rel="noopener" target="_blank">in LinkedIn</a><a class="btn" href="https://freimoser.de/projekte/">Alle Projekte</a></div></div></div></section>'''
 
 def faq_ld(faqs):
     return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
@@ -43,6 +62,7 @@ def page(path, title, desc, h1, lead, body, faqs, extra_ld=None, tool=False):
 <link rel="apple-touch-icon" href="{P}apple-touch-icon.png">
 <link rel="stylesheet" href="{P}styles.css">
 {ld}
+<meta name="author" content="Thomas Freimoser">
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="brand" href="{P}"><img src="{P}favicon.svg" alt="" width="28" height="28">DICOM Viewer</a><nav class="main">{nav}</nav></div></header>
@@ -51,15 +71,17 @@ def page(path, title, desc, h1, lead, body, faqs, extra_ld=None, tool=False):
 <h1>{h1}</h1>
 <p class="lead">{lead}</p>
 {tool_html}
-<div class="content">{body}{faq_html(faqs)}</div>
+<div class="content">{body}{CROSS if not path.startswith(("ldt-","laborbefund","medizinische","datenschutz","404")) else ""}{faq_html(faqs) if faqs else ""}</div>
 </main>
+{ABOUT}
 <footer><div class="wrap">
 <p><strong>Weitere kostenlose Praxis-Tools:</strong></p>
 <div class="cols"><a href="https://freimoser.github.io/gdt-viewer/">GDT Viewer</a><a href="https://freimoser.github.io/ldt-bdt-viewer/">LDT &amp; BDT Viewer</a><a href="https://freimoser.github.io/e-rechnung-klartext/">E-Rechnung Klartext</a><a href="https://freimoser.de/">Portfolio Thomas Freimoser</a></div>
-<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="https://freimoser.github.io/freimoser.de/impressum/">Datenschutz</a><span>{MDR}</span></p>
+<p class="cols" style="margin-top:12px"><a href="https://freimoser.github.io/freimoser.de/impressum/">Impressum</a><a href="{P}datenschutz/">Datenschutz</a><span>{MDR}</span></p>
 <p>Open-Source-Bausteine: <a href="https://github.com/cornerstonejs/dicomParser">dicomParser</a> (MIT, © Chris Hafey), <a href="https://github.com/cornerstonejs/codecs">codec-openjpeg und codec-charls</a> (MIT, © Chris Hafey) mit OpenJPEG (BSD-2) und CharLS (BSD-3), <a href="https://github.com/rii-mango/JPEGLosslessDecoderJS">jpeg-lossless-decoder-js</a> (MIT, © RII-UTHSCSA), JPEG-Decoder aus cornerstone3D (MIT) auf Basis von pdf.js (Apache-2.0, © Mozilla). <a href="https://github.com/freimoser/dicom-viewer/blob/main/THIRD-PARTY-LICENSES">Alle Lizenztexte</a>. Gebaut in München / Remote.</p>
 </div></footer>
 {scripts}
+{ga_snippet()}
 </body></html>
 '''
 
@@ -125,7 +147,7 @@ PAGES.append(("", page("", "DICOM Viewer kostenlos online – ohne Installation,
 <p>Unkomprimierte DICOM-Bilder (Implicit/Explicit VR Little Endian, Explicit VR Big Endian) in 8, 16 und 32 Bit, Graustufen und Farbe, auch Mehrbild-Dateien (Multiframe) wie Ultraschall-Clips. Dazu alle auf Radiologie-CDs üblichen Kompressionen: JPEG Baseline und Extended (8/12 Bit), JPEG Lossless, JPEG-LS (verlustfrei und nahezu verlustfrei), JPEG 2000 (verlustfrei und verlustbehaftet) sowie RLE. Die nötigen Decoder werden erst nachgeladen, wenn ein solches Bild auftaucht – ebenfalls lokal, ohne dass Bilddaten Ihr Gerät verlassen. Nur seltene Exoten (z. B. Deflate, HTJ2K, Video-Formate) zeigen einen klaren Hinweis statt eines leeren Bildes.</p>
 <h2>Was der Viewer bewusst nicht kann</h2>
 <p>Es gibt keine Mess-, Markierungs- oder Befundwerkzeuge. Der Viewer ist zum Anschauen gedacht, etwa um vor dem Arzttermin die eigenen Bilder zu sehen. {MDR} Die Beurteilung Ihrer Bilder gehört in ärztliche Hände.</p>
-<p>Mehr dazu: <a href="radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> · <a href="dicom-in-jpg/">DICOM in JPG umwandeln</a> · <a href="dicom-viewer-mac/">DICOM am Mac</a> · <a href="dicom-iphone/">DICOM am iPhone</a> · <a href="mrt-bilder-verstehen/">MRT-Bilder verstehen</a></p>
+<p>Mehr dazu: <a href="radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> · <a href="dicom-in-jpg/">DICOM in JPG umwandeln</a> · <a href="dicom-viewer-mac/">DICOM am Mac</a> · <a href="dicom-iphone/">DICOM am iPhone</a> · <a href="mrt-bilder-verstehen/">MRT-Bilder verstehen</a> · <a href="medizinische-datenformate/">DICOM, LDT, BDT, GDT</a></p>
 <h2>Was ist DICOM?</h2>
 <p>DICOM (Digital Imaging and Communications in Medicine) ist der weltweite Standard für medizinische Bilder. Eine DICOM-Datei enthält das Bild selbst und zusätzlich Angaben wie Patientenname, Untersuchungsdatum, Gerät, Schichtdicke und Kontrastvorgaben. Deshalb öffnen normale Bildbetrachter diese Dateien nicht: Sie kennen weder das Format noch die 12- oder 16-Bit-Graustufen, die ein CT liefert.</p>'''.replace("{MDR}", MDR),
   [("Ist der DICOM Viewer wirklich kostenlos?", "Ja. Keine Anmeldung, keine Werbung im Viewer, keine Testphase."),
@@ -261,6 +283,8 @@ PAGES.append(("mrt-bilder-verstehen/", page("mrt-bilder-verstehen/", "MRT-Bilder
    ("Kann ich anhand der Bilder selbst etwas erkennen?", "Laien können Anatomie erkennen, aber Befunde zuverlässig zu beurteilen erfordert Fachwissen. Der Viewer ist kein Medizinprodukt und nur zur Ansicht gedacht."),
    ("Was bedeutet KM im Seriennamen?", "KM steht für Kontrastmittel. Diese Serie wurde nach der Gabe von Kontrastmittel aufgenommen, meist in T1-Wichtung.")])))
 
+exec(open('articles.py', encoding='utf-8').read())
+
 for path, content in PAGES:
     os.makedirs(path or ".", exist_ok=True)
     open(os.path.join(path, "index.html") if path else "index.html", "w").write(content)
@@ -287,11 +311,16 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 - [DICOM Viewer für Mac]({BASE}dicom-viewer-mac/)
 - [DICOM am iPhone öffnen]({BASE}dicom-iphone/)
 - [MRT-Bilder verstehen]({BASE}mrt-bilder-verstehen/): T1, T2, FLAIR, Schnittebenen für Laien
+- [LDT, BDT und GDT öffnen]({BASE}ldt-bdt-gdt-dateien-oeffnen/)
+- [Laborbefunde (LDT) verstehen]({BASE}laborbefund-ldt-verstehen/)
+- [Medizinische Datenformate: DICOM, LDT, BDT, GDT]({BASE}medizinische-datenformate/)
+- [Datenschutz]({BASE}datenschutz/)
 
 ## Verwandte Tools
 - [GDT Viewer](https://freimoser.github.io/gdt-viewer/)
 - [LDT & BDT Viewer](https://freimoser.github.io/ldt-bdt-viewer/)
 - [E-Rechnung Klartext](https://freimoser.github.io/e-rechnung-klartext/)
-- [Portfolio](https://freimoser.de/)
+- [Portfolio Thomas Freimoser](https://freimoser.de/)
+- [LinkedIn Thomas Freimoser]({LINKEDIN})
 """)
 print("ok", len(PAGES), "Seiten")

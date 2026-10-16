@@ -11,9 +11,14 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 - [DICOM Viewer für Mac](https://freimoser.github.io/dicom-viewer/dicom-viewer-mac/)
 - [DICOM am iPhone öffnen](https://freimoser.github.io/dicom-viewer/dicom-iphone/)
 - [MRT-Bilder verstehen](https://freimoser.github.io/dicom-viewer/mrt-bilder-verstehen/): T1, T2, FLAIR, Schnittebenen für Laien
+- [LDT, BDT und GDT öffnen](https://freimoser.github.io/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/)
+- [Laborbefunde (LDT) verstehen](https://freimoser.github.io/dicom-viewer/laborbefund-ldt-verstehen/)
+- [Medizinische Datenformate: DICOM, LDT, BDT, GDT](https://freimoser.github.io/dicom-viewer/medizinische-datenformate/)
+- [Datenschutz](https://freimoser.github.io/dicom-viewer/datenschutz/)
 
 ## Verwandte Tools
 - [GDT Viewer](https://freimoser.github.io/gdt-viewer/)
 - [LDT & BDT Viewer](https://freimoser.github.io/ldt-bdt-viewer/)
 - [E-Rechnung Klartext](https://freimoser.github.io/e-rechnung-klartext/)
-- [Portfolio](https://freimoser.de/)
+- [Portfolio Thomas Freimoser](https://freimoser.de/)
+- [LinkedIn Thomas Freimoser](https://www.linkedin.com/in/freimoser)
