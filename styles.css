@@ -33,7 +33,7 @@ h1{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.2;margin:24px 0 8px}h2{margi
 .checks{display:flex;flex-wrap:wrap;gap:14px;font-size:.9rem;color:var(--mu);margin:8px 0}
 .tagbox{margin-top:12px}.tagbox input{width:100%;background:var(--soft);border:1px solid var(--bd);color:var(--tx);padding:8px;border-radius:9px;font:inherit}
 .tablewrap{max-height:340px;overflow:auto;border:1px solid var(--bd);border-radius:9px;margin-top:6px}
-table{border-collapse:collapse;width:100%;font-size:.84rem}td,th{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top;word-break:break-word}td:first-child{font-family:var(--mono);white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:.84rem}td,th{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:left;vertical-align:top;word-break:break-word}.tablewrap td:first-child{font-family:var(--mono);white-space:nowrap}@media(max-width:600px){.content table,main table:not(.tablewrap table){display:block;overflow-x:auto;font-size:.8rem}}
 .card{background:var(--el);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;margin:12px 0}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .content{max-width:820px}.content li{margin:4px 0}
