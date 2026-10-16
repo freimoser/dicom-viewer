@@ -47,3 +47,11 @@ kbd{background:var(--soft);border:1px solid var(--bd);border-radius:4px;padding:
 .about .wrap{display:flex;gap:18px;align-items:flex-start}.about h2{margin:0 0 6px;font-size:1.15rem}.about p{margin:0}
 .cc{position:fixed;left:12px;right:12px;bottom:12px;max-width:640px;margin:auto;padding:14px 16px;border-radius:12px;background:#111c26;border:1px solid #2a3a48;box-shadow:0 8px 30px rgba(0,0,0,.5);z-index:99}
 .cc p{margin:0 0 8px}.cc .btns{display:flex;gap:8px}
+
+/* Mobil-Feinschliff: Navigation als wischbare Zeile, Entwickler-Block gestapelt */
+@media(max-width:640px){header.top .wrap{flex-wrap:nowrap;gap:12px;padding-top:8px;padding-bottom:8px}.brand{flex:none}
+nav.main{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0;flex:1;padding:6px 0;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}nav.main::-webkit-scrollbar{display:none}nav.main a{flex:none}}
+.about .wrap>div{min-width:0;flex:1}.about .btn svg{flex:none}
+@media(max-width:600px){.about .wrap{flex-direction:column;gap:10px}.about .wrap>img{width:36px;height:36px}
+.about .btns,.xlink .btns{display:grid;grid-template-columns:1fr;gap:8px}.about .btns .btn,.xlink .btns .btn{width:100%;justify-content:flex-start;min-height:44px;white-space:normal}
+footer .cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}}
