@@ -62,3 +62,16 @@ footer .cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}}
 .menu-btn[aria-expanded=true] span{background:transparent}.menu-btn[aria-expanded=true] span::before{top:0;transform:rotate(45deg)}.menu-btn[aria-expanded=true] span::after{top:0;transform:rotate(-45deg)}
 nav.main{display:none!important;position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0!important;background:var(--bg);border-bottom:1px solid var(--bd);box-shadow:0 12px 24px rgba(0,0,0,.5);padding:6px 0!important;overflow:visible!important;white-space:normal!important;-webkit-mask-image:none!important;mask-image:none!important;z-index:20}
 nav.main.open{display:flex!important}nav.main a{display:flex;align-items:center;min-height:48px;padding:0 20px;font-size:1.02rem;color:var(--tx);border-top:1px solid var(--bd)}nav.main a:first-child{border-top:0}nav.main a[aria-current]{color:var(--ac);font-weight:700}}
+
+/* Beispieldateien */
+.samples{margin:32px 0}.samples h2{margin-top:0}
+.sgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin:12px 0}
+.sample{margin:0;display:flex;flex-direction:column;min-width:0}
+.sample .sh{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.sample h3{margin:0;font-size:1.05rem}
+.badge{flex:none;background:var(--acd);border:1px solid var(--ac);color:var(--ac);border-radius:999px;padding:0 10px;font-size:.78rem;font-weight:700;line-height:1.7}
+.sample .meta{color:var(--mu);margin:4px 0 8px}.sample .see{margin:0 0 12px}.sample .btns{justify-content:flex-start;margin-top:auto}.sample .cr{color:var(--mu);margin:12px 0 0}
+.sample .btn{min-height:44px}.samples .srcs{padding-left:20px}.samples .srcs li{margin:6px 0}
+@media(min-width:700px){.sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1000px){.sgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.samples{scroll-margin-top:72px}
+#app{scroll-margin-top:72px}

@@ -7,7 +7,7 @@ LASTMOD = "2026-10-17"
 GA_ID = ""  # GA4 Mess-ID, z. B. "G-XXXXXXX". Leer = kein Analytics, kein Banner.
 LINKEDIN = "https://www.linkedin.com/in/freimoser"
 MDR = "Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt."
-NAV = [("", "Viewer"), ("radiologie-cd-oeffnen/", "Radiologie-CD öffnen"), ("dicom-in-jpg/", "DICOM in JPG"),
+NAV = [("", "Viewer"), ("#beispiele", "Beispieldateien"), ("radiologie-cd-oeffnen/", "Radiologie-CD öffnen"), ("dicom-in-jpg/", "DICOM in JPG"),
        ("dicom-viewer-mac/", "Mac"), ("dicom-iphone/", "iPhone"), ("mrt-bilder-verstehen/", "MRT verstehen"), ("medizinische-datenformate/", "Datenformate")]
 
 def ga_snippet():
@@ -41,7 +41,7 @@ def page(path, title, desc, h1, lead, body, faqs, extra_ld=None, tool=False):
         {"@type": "ListItem", "position": 1, "name": "DICOM Viewer", "item": BASE}] + ([{"@type": "ListItem", "position": 2, "name": h1, "item": url}] if path else [])})
     nav = "".join(f'<a href="{P}{p}"{" aria-current=\"page\"" if p == path else ""}>{n}</a>' for p, n in NAV)
     ld = "\n".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in lds)
-    tool_html = TOOL if tool else f'<p><a class="btn pri" href="{P}">DICOM Viewer öffnen →</a></p>'
+    tool_html = (TOOL + samples_html()) if tool else f'<p><a class="btn pri" href="{P}">DICOM Viewer öffnen →</a></p>'
     scripts = f'<script src="{P}vendor/dicomParser.min.js"></script><script src="{P}app.js"></script>' if tool else ""
     return f'''<!DOCTYPE html>
 <html lang="de">
@@ -85,6 +85,54 @@ def page(path, title, desc, h1, lead, body, faqs, extra_ld=None, tool=False):
 </body></html>
 '''
 
+def _size(path):
+    b = os.path.getsize(path)
+    return f"{b/1e6:.1f} MB".replace(".", ",") if b >= 1e6 else f"{round(b/1000)} KB"
+
+# Beispieldateien: (Datei, Titel, Badge, Pixel/Schichten, Lizenz, Erklärung "Was man hier sieht")
+SAMPLES = [
+ ("TS-CT-ELE.dcm", "Thorax-CT (eine Schicht)", "CT", "512 × 512 Pixel · 1 Schicht", "CC0",
+  "Ein Querschnitt durch den Brustkorb. Die beiden großen dunklen Flächen sind die luftgefüllten Lungenflügel, das runde graue Gebilde in der Mitte steht für das Herz, und helle Bereiche sind Knochen, etwa oben das Brustbein und unten die Wirbelsäule als heller Ring. Das Bild ist am Computer berechnet und zeigt keine echte Person. Probieren Sie die Fenster-Vorgaben (Weichteil, Lunge, Knochen): Dieselben Daten sehen dann sehr unterschiedlich aus."),
+ ("MR-01_T1_s1_10.dcm", "MRT Kopf, T1-gewichtet", "MRT", "256 × 256 Pixel · 1 Schicht", "CC0",
+  "Ein waagerechter Schnitt durch einen Kopf, aber nur ein berechnetes Testmodell (Phantom) und kein echtes Gehirn. In der T1-Wichtung erscheint Gewebe hellgrau und Flüssigkeit dunkel: Die beiden dunklen Ovale verhalten sich wie flüssigkeitsgefüllte Räume. Vergleichen Sie es mit dem T2-Beispiel."),
+ ("MR-01_T2_s2_10.dcm", "MRT Kopf, T2-gewichtet", "MRT", "256 × 256 Pixel · 1 Schicht", "CC0",
+  "Dasselbe Testmodell wie beim T1-Beispiel, nur T2-gewichtet. Jetzt ist der Kontrast umgekehrt: Flüssigkeit wird hell, die beiden Ovale leuchten weiß, das übrige Gewebe wirkt dunkler. So sieht man gut, warum bei einer MRT-Untersuchung mehrere Wichtungen aufgenommen werden."),
+ ("DX-01.dcm", "Röntgen Thorax (p.-a.)", "Röntgen", "1200 × 1440 Pixel · 1 Bild", "CC0",
+  "Ein stark vereinfachtes, am Computer erzeugtes Röntgenbild des Brustkorbs, von hinten nach vorn durchstrahlt (p.-a.). Röntgenbilder sind Schattenbilder: Dichtes Gewebe wie Knochen erscheint hell (hier die waagerechten Streifen der Rippen), luftgefüllte Lunge dunkel. Die helle runde Fläche in der Mitte steht für das Herz. Der Hinweis „SYNTHETIC – NOT FOR CLINICAL USE“ ist ins Bild eingebrannt."),
+ ("katze-femur-ct_zenodo-3829502.dcm", "Katzen-Oberschenkelknochen (CT)", "CT", "41 × 185 Pixel · 75 Schichten", "CC BY 4.0",
+  "Ein schmaler Ausschnitt (etwa 2,8 × 12,6 cm) aus einer CT-Aufnahme des Oberschenkelknochens einer Katze mit 75 Schichten, daher steht das Bild als schmaler Streifen. Knochen erscheint hell (außen weiß, innen dunkler), Weichgewebe wie Muskeln mittelgrau, Luft schwarz. Blättern Sie mit Mausrad oder Schieberegler: Der Knochen zeigt sich mal als Ring, mal als langer heller Streifen. Es sind Forschungsdaten, nicht klinisch, und die Datei wurde mit der Software MeVisLab aus dem CT-Volumen abgeleitet."),
+]
+
+def samples_html():
+    cards = ""
+    for f, title, mod, dim, lic, text in SAMPLES:
+        sz = _size(os.path.join("samples", f))
+        credit = ('<p class="small cr">Namensnennung: Jana Cavojska, <a href="https://doi.org/10.5281/zenodo.3829502" rel="noopener">DOI 10.5281/zenodo.3829502</a>, '
+                  '<a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>. Datei unverändert übernommen.</p>') if lic == "CC BY 4.0" else \
+                 '<p class="small cr">Quelle: <a href="https://www.charruasoft.com/dicom-samples/" rel="noopener">CharruaSoft</a>, CC0 (gemeinfrei), synthetisch.</p>'
+        cards += (f'<article class="card sample"><div class="sh"><h3>{html.escape(title)}</h3><span class="badge">{mod}</span></div>'
+                  f'<p class="small meta">{dim} · {sz} · {lic}</p>'
+                  f'<p class="see"><strong>Was man hier sieht:</strong> {text}</p>'
+                  f'<div class="btns"><button class="btn pri" type="button" data-sample="{f}">Beispiel laden</button>'
+                  f'<a class="btn" href="{P}samples/{f}" download>Datei laden</a></div>{credit}</article>')
+    return f"""
+<section class="samples" id="beispiele" aria-labelledby="bsp-h">
+<h2 id="bsp-h">Beispieldateien zum Ausprobieren</h2>
+<p>Keine eigene Datei zur Hand? Mit „Beispiel laden“ öffnen Sie eine der Dateien unten direkt im Viewer. Mit „Datei laden“ speichern Sie sie, etwa um „Dateien wählen“ auszuprobieren. Alles läuft weiterhin nur in Ihrem Browser.</p>
+<div class="mdr" role="note">ℹ️ Synthetische bzw. anonymisierte Beispieldaten, nicht für klinische Zwecke. Das Katzen-CT steht unter CC BY 4.0 (Jana Cavojska, siehe Karte), alle übrigen sind CC0.</div>
+<div class="sgrid">{cards}</div>
+<h3>Weitere Beispieldaten zum Selbst-Ausprobieren</h3>
+<ul class="srcs">
+<li><a href="https://www.charruasoft.com/dicom-samples/" rel="noopener">CharruaSoft DICOM Samples</a>: synthetische Dateien in vielen Formaten und Kompressionen (CC0).</li>
+<li><a href="https://github.com/pydicom/pydicom-data" rel="noopener">pydicom-data</a>: Testdateien des Python-Projekts pydicom, auch mit seltenen Formaten.</li>
+<li><a href="https://www.cancerimagingarchive.net/" rel="noopener">The Cancer Imaging Archive (TCIA)</a>: große, anonymisierte Forschungsdatensätze. Die Lizenz gilt je Datensatz.</li>
+<li><a href="https://doi.org/10.5281/zenodo.3829502" rel="noopener">Zenodo 3829502</a>: 3D-CT-Daten von Katzen-Oberschenkelknochen (CC BY 4.0), Quelle unseres Katzen-Beispiels.</li>
+<li><a href="https://www.osirix-viewer.com/resources/dicom-image-library/" rel="noopener">OsiriX DICOM Image Library</a> und <a href="https://www.dicomlibrary.com/" rel="noopener">DICOM Library</a>: eigene Nutzungsbedingungen, nicht von uns weitergegeben. Bitte dort selbst prüfen und herunterladen.</li>
+</ul>
+</section>
+"""
+
+
 TOOL = '''
 <section class="drop" id="drop" aria-label="Dateien laden">
 <p><strong>DICOM-Dateien oder den ganzen Ordner der CD hierher ziehen</strong></p>
@@ -92,6 +140,7 @@ TOOL = '''
 <label class="btn pri">📁 Ordner / CD wählen<input type="file" id="dirIn" webkitdirectory directory multiple></label>
 <label class="btn">📄 Dateien wählen<input type="file" id="fileIn" multiple></label>
 </div>
+<p style="margin:10px 0 0"><a href="#beispiele">Keine Datei zur Hand? Beispieldateien ausprobieren ↓</a></p>
 <p style="color:var(--mu);font-size:.88rem;margin:10px 0 0">Erkennt DICOMDIR und Dateien ohne Endung. Unterstützt unkomprimierte Bilder, JPEG, JPEG Lossless, JPEG-LS, JPEG 2000 und RLE.</p>
 </section>
 <div class="msg" id="msg" hidden></div>
@@ -306,6 +355,7 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 
 ## Seiten
 - [DICOM Viewer kostenlos online]({BASE}): das Tool selbst
+- [Beispieldateien zum Ausprobieren]({BASE}#beispiele): synthetische bzw. anonymisierte CT-, MRT- und Röntgen-Beispiele (CC0, ein Katzen-CT unter CC BY 4.0)
 - [Radiologie-CD öffnen]({BASE}radiologie-cd-oeffnen/): CD am PC/Mac öffnen, DICOMDIR erklärt
 - [DICOM in JPG umwandeln]({BASE}dicom-in-jpg/): anonymer Export vor dem Weitergeben
 - [DICOM Viewer für Mac]({BASE}dicom-viewer-mac/)

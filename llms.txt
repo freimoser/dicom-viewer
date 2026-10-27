@@ -6,6 +6,7 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 
 ## Seiten
 - [DICOM Viewer kostenlos online](https://freimoser.github.io/dicom-viewer/): das Tool selbst
+- [Beispieldateien zum Ausprobieren](https://freimoser.github.io/dicom-viewer/#beispiele): synthetische bzw. anonymisierte CT-, MRT- und Röntgen-Beispiele (CC0, ein Katzen-CT unter CC BY 4.0)
 - [Radiologie-CD öffnen](https://freimoser.github.io/dicom-viewer/radiologie-cd-oeffnen/): CD am PC/Mac öffnen, DICOMDIR erklärt
 - [DICOM in JPG umwandeln](https://freimoser.github.io/dicom-viewer/dicom-in-jpg/): anonymer Export vor dem Weitergeben
 - [DICOM Viewer für Mac](https://freimoser.github.io/dicom-viewer/dicom-viewer-mac/)

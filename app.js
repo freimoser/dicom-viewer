@@ -65,6 +65,10 @@
     if (u8.length > 132 && u8[128] === 68 && u8[129] === 73 && u8[130] === 67 && u8[131] === 77) return true;
     return /\.(dcm|dicom|dic|ima)$/i.test(name); // ältere Dateien ohne Präambel
   }
+  function unreadableWhy(u8) { // Dateikopf auf bekannte, nicht unterstützte Kodierung prüfen
+    let h = ''; for (let i = 0, n = Math.min(u8.length, 1024); i < n; i++) h += String.fromCharCode(u8[i]);
+    return h.indexOf('1.2.840.10008.1.2.1.99') >= 0 ? 'ist Deflate-komprimiert, das kann der Viewer nicht entpacken' : '';
+  }
   async function loadFiles(files) {
     msg('Lese ' + files.length + ' Datei(en) …');
     let ok = 0, skipped = 0, dicomdir = false; const errs = new Set();
@@ -77,7 +81,7 @@
       try { u8 = new Uint8Array(await f.arrayBuffer()); } catch (e) { skipped++; continue; }
       if (!isDicomBuf(u8, f.name)) { skipped++; continue; }
       let ds;
-      try { ds = dicomParser.parseDicom(u8); } catch (e) { skipped++; errs.add('Nicht lesbar: ' + f.name); continue; }
+      try { ds = dicomParser.parseDicom(u8); } catch (e) { skipped++; errs.add('„' + f.name + '“ ' + (unreadableWhy(u8) || 'ist nicht lesbar') + '.'); continue; }
       if (str(ds, 'x00041200') || str(ds, 'x00020002') === '1.2.840.10008.1.3.10') { dicomdir = true; continue; }
       if (!ds.elements.x7fe00010) { skipped++; continue; }
       const ts = str(ds, 'x00020010') || '1.2.840.10008.1.2';
@@ -98,7 +102,7 @@
     const parts = [ok + ' DICOM-Bild(er) geladen'];
     if (dicomdir) parts.push('DICOMDIR erkannt (CD-Inhaltsverzeichnis, Bilder werden direkt gelesen)');
     if (skipped) parts.push(skipped + ' Datei(en) übersprungen');
-    if (!ok) { msg('Keine DICOM-Bilder gefunden. ' + (dicomdir ? 'Es wurde nur das DICOMDIR gewählt – bitte den ganzen Ordner der CD laden.' : 'Bitte .dcm-Dateien oder den Ordner der CD wählen.'), true); return; }
+    if (!ok) { msg('Keine DICOM-Bilder gefunden. ' + (dicomdir ? 'Es wurde nur das DICOMDIR gewählt – bitte den ganzen Ordner der CD laden.' : 'Bitte .dcm-Dateien oder den Ordner der CD wählen.') + (errs.size ? ' ' + [...errs].slice(0, 3).join(' ') : '') + ' Unterstützt werden unkomprimierte DICOM-Bilder sowie JPEG, JPEG Lossless, JPEG-LS, JPEG 2000 und RLE; nicht unterstützt sind Deflate, HTJ2K und Videoformate. Zum Ausprobieren: Beispieldateien weiter unten.', true); return; }
     msg(parts.join(' · '));
     $('#app').hidden = false;
     renderTree();
@@ -390,5 +394,21 @@
   document.addEventListener('keydown', (e) => { if (!state.cur || e.target.tagName === 'INPUT') return; const n = state.cur.images.length;
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') state.idx = Math.min(n - 1, state.idx + 1); else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') state.idx = Math.max(0, state.idx - 1); else return; e.preventDefault(); show(); });
   window.addEventListener('resize', () => draw());
+  // ---------- Beispieldateien ----------
+  const SAMPLES_URL = new URL('samples/', document.currentScript ? document.currentScript.src : location.href).href;
+  async function loadSample(btn) {
+    const name = btn.dataset.sample, label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Lade …';
+    try {
+      const r = await fetch(SAMPLES_URL + name);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const blob = await r.blob();
+      state.series = []; state.cur = null; state.idx = 0; // nur das Beispiel zeigen, nicht mit früheren Dateien mischen
+      await loadFiles([new File([blob], name)]);
+      if (state.cur) $('#app').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (e) { msg('Das Beispiel konnte nicht geladen werden (' + (e.message || e) + '). Bitte erneut versuchen.', true); }
+    btn.disabled = false; btn.textContent = label;
+  }
+  document.querySelectorAll('[data-sample]').forEach((b) => b.onclick = () => loadSample(b));
   window.dicomViewerLoad = loadFiles;
 })();
