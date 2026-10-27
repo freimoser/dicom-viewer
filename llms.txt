@@ -22,4 +22,4 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 - [LDT & BDT Viewer](https://freimoser.github.io/ldt-bdt-viewer/)
 - [E-Rechnung Klartext](https://freimoser.github.io/e-rechnung-klartext/)
 - [Portfolio Thomas Freimoser](https://freimoser.de/)
-- [LinkedIn Thomas Freimoser](https://www.linkedin.com/in/freimoser)
+- [LinkedIn Thomas Freimoser](https://www.linkedin.com/in/thomas-freimoser/)

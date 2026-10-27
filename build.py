@@ -5,7 +5,7 @@ BASE = "https://freimoser.github.io/dicom-viewer/"
 P = "/dicom-viewer/"
 LASTMOD = "2026-10-17"
 GA_ID = ""  # GA4 Mess-ID, z. B. "G-XXXXXXX". Leer = kein Analytics, kein Banner.
-LINKEDIN = "https://www.linkedin.com/in/freimoser"
+LINKEDIN = "https://www.linkedin.com/in/thomas-freimoser/"
 MDR = "Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt."
 NAV = [("", "Viewer"), ("#beispiele", "Beispieldateien"), ("radiologie-cd-oeffnen/", "Radiologie-CD öffnen"), ("dicom-in-jpg/", "DICOM in JPG"),
        ("dicom-viewer-mac/", "Mac"), ("dicom-iphone/", "iPhone"), ("mrt-bilder-verstehen/", "MRT verstehen"), ("medizinische-datenformate/", "Datenformate")]
