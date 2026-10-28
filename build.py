@@ -4,6 +4,7 @@ import json, os, html
 BASE = "https://freimoser.github.io/dicom-viewer/"
 P = "/dicom-viewer/"
 LASTMOD = "2026-10-17"
+LASTMOD_BY = {"medizinische-datenformate/": "2026-10-29"}
 GA_ID = ""  # GA4 Mess-ID, z. B. "G-XXXXXXX". Leer = kein Analytics, kein Banner.
 LINKEDIN = "https://www.linkedin.com/in/thomas-freimoser/"
 MDR = "Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt."
@@ -343,7 +344,7 @@ open("404.html", "w").write(page("404/", "Seite nicht gefunden – DICOM Viewer"
 
 sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 for path, _ in PAGES:
-    sm.append(f"  <url><loc>{BASE}{path}</loc><lastmod>{LASTMOD}</lastmod><priority>{'1.0' if not path else '0.8'}</priority></url>")
+    sm.append(f"  <url><loc>{BASE}{path}</loc><lastmod>{LASTMOD_BY.get(path, LASTMOD)}</lastmod><priority>{'1.0' if not path else '0.8'}</priority></url>")
 sm.append("</urlset>")
 open("sitemap.xml", "w").write("\n".join(sm) + "\n")
 
@@ -363,7 +364,7 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 - [MRT-Bilder verstehen]({BASE}mrt-bilder-verstehen/): T1, T2, FLAIR, Schnittebenen für Laien
 - [LDT, BDT und GDT öffnen]({BASE}ldt-bdt-gdt-dateien-oeffnen/)
 - [Laborbefunde (LDT) verstehen]({BASE}laborbefund-ldt-verstehen/)
-- [Medizinische Datenformate: DICOM, LDT, BDT, GDT]({BASE}medizinische-datenformate/)
+- [Medizinische Datenformate: DICOM, LDT, BDT, GDT, Vergleich mit HL7 v2, CDA und FHIR]({BASE}medizinische-datenformate/)
 - [Datenschutz]({BASE}datenschutz/)
 
 ## Verwandte Tools

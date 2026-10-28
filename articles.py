@@ -1,10 +1,13 @@
 # Zusatzartikel (wird von build.py per exec eingebunden)
 LDT_V = "https://freimoser.github.io/ldt-bdt-viewer/"
 GDT_V = "https://freimoser.github.io/gdt-viewer/"
+CDA_V = "https://freimoser.github.io/cda-viewer/"
+FHIR_V = "https://freimoser.github.io/fhir-viewer/"
+HL7V2_V = "https://freimoser.github.io/hl7v2-viewer/"
 CTA = f'<div class="xlink"><p><strong>Direkt ausprobieren:</strong> Dateien lokal im Browser öffnen, ohne Upload und ohne Installation.</p><div class="btns"><a class="btn pri" href="{LDT_V}">LDT &amp; BDT Viewer öffnen →</a><a class="btn pri" href="{GDT_V}">GDT Viewer öffnen →</a></div></div>'
 def art_ld(h1, desc, url):
     return {"@context": "https://schema.org", "@type": "Article", "headline": h1, "description": desc, "inLanguage": "de-DE",
-            "dateModified": LASTMOD, "mainEntityOfPage": url, "author": {"@type": "Person", "name": "Thomas Freimoser", "url": "https://freimoser.de/", "sameAs": [LINKEDIN]}}
+            "dateModified": LASTMOD_BY.get(url[len(BASE):], LASTMOD), "mainEntityOfPage": url, "author": {"@type": "Person", "name": "Thomas Freimoser", "url": "https://freimoser.de/", "sameAs": [LINKEDIN]}}
 
 # 1 ----------------------------------------------------------------
 t1 = "LDT, BDT und GDT Dateien öffnen"
@@ -58,7 +61,7 @@ PAGES.append(("ldt-bdt-gdt-dateien-oeffnen/", page("ldt-bdt-gdt-dateien-oeffnen/
 
 # 2 ----------------------------------------------------------------
 t2 = "Medizinische Datenformate in der Praxis: DICOM, LDT, BDT, GDT"
-d2 = "DICOM, LDT, BDT und GDT verständlich erklärt: Wofür jedes Format da ist, wie die Daten durch die Praxis fließen, wo Fehler entstehen und welche Viewer helfen."
+d2 = "DICOM, LDT, BDT, GDT, HL7 v2, CDA und FHIR verständlich erklärt: Wofür jedes Format da ist, wo Fehler entstehen und welche Viewer helfen."
 PAGES.append(("medizinische-datenformate/", page("medizinische-datenformate/", "Medizinische Datenformate: DICOM, LDT, BDT, GDT erklärt",
   d2, t2,
   "In einer Arztpraxis laufen täglich Daten zwischen Praxissoftware, Labor, Geräten und Radiologie hin und her. Vier Formate tauchen dabei immer wieder auf. Ein Überblick für Praxisteams, IT-Betreuer und Neugierige.",
@@ -93,6 +96,15 @@ PAGES.append(("medizinische-datenformate/", page("medizinische-datenformate/", "
 <li><strong>Datenschutz bei der Fehlersuche:</strong> Wer eine fehlerhafte Datei an den Support schickt, verschickt Gesundheitsdaten. Besser: lokal ansehen, Fehler eingrenzen, nur das Nötige weitergeben.</li></ul>
 <h2>Und was ist mit HL7 und FHIR?</h2>
 <p>Im Krankenhaus ist HL7 seit Langem verbreitet, und mit FHIR gibt es einen modernen, webbasierten Standard, auf dem auch viele Anwendungen der Telematikinfrastruktur aufbauen, etwa die elektronische Patientenakte. Für die niedergelassene Praxis bleiben die xDT-Formate aber vorerst im Alltag präsent – gerade bei Labor- und Geräteanbindungen.</p>
+<h2>HL7 v2, HL7 v3/CDA und FHIR im Vergleich</h2>
+<p>Neben DICOM und den xDT-Formaten gibt es die HL7-Standardfamilie. Nach der Startseite von HL7 Deutschland gehören HL7 v2.x, CDA, V3 und FHIR dazu. Die Tabelle stellt drei Vertreter nebeneinander. Sie macht keine Aussage zur Nutzung in der Praxis, sondern zeigt nur, wie die Daten aufgebaut sind und wofür die zitierten Quellen das Format beschreiben.</p>
+<table><thead><tr><th>Format</th><th>Datenform</th><th>Typischer Gegenstand laut Quelle</th><th>Im Browser ansehen</th></tr></thead><tbody>
+<tr><td><strong>HL7 v2</strong></td><td>Textnachricht aus Segmenten; ein Segment wird per Pipe-Zeichen in Felder geteilt, ein Feld in Komponenten</td><td>Verwaltung, Aufträge und Ergebnisse im Krankenhaus</td><td><a href="{HL7V2_V}">HL7-v2-Nachricht in Segmente und Felder zerlegen</a></td></tr>
+<tr><td><strong>HL7 CDA</strong> (Clinical Document Architecture)</td><td>XML-Dokument; beim eArztbrief nach der KBV-Richtlinie PDF/A plus XML nach dem VHitG-Arztbrief-Leitfaden v1.50</td><td>Klinische Dokumente wie der Arztbrief, mit Kopf (Patient, Autor, Verwahrer) und Abschnitten</td><td><a href="{CDA_V}">CDA-Arztbrief als lesbaren Brief anzeigen</a></td></tr>
+<tr><td><strong>FHIR</strong> (Fast Healthcare Interoperability Resources)</td><td>Ressourcen wie Patient, Observation oder Encounter als JSON oder XML, austauschbar über REST-Schnittstellen; mehrere Ressourcen lassen sich in einem Bundle bündeln</td><td>Gesundheitsdaten als einzelne Ressourcen; ein Bundle vom Typ document mit einer Composition als erster Ressource bildet ein Dokument ab</td><td><a href="{FHIR_V}">FHIR-Ressource oder Bundle als Karte und Baum öffnen</a></td></tr>
+</tbody></table>
+<p>Ein Unterschied liegt in der Form: HL7 v2 ist eine Folge von Textzeilen, CDA ein Dokument in XML, FHIR eine Sammlung einzelner Ressourcen. Alle drei Viewer lesen die Datei nur lokal im Browser und laden nichts hoch. Die Quellen, auf die sich die Angaben stützen, stehen bei den Viewern: <a href="{HL7V2_V}quellen/">Quellenliste zum HL7-v2-Viewer</a>, <a href="{CDA_V}quellen/">Belege zum CDA-Viewer</a> und <a href="{FHIR_V}quellen/">Fachquellen zum FHIR-Viewer</a>.</p>
+<p class="small">HL7® und FHIR® sind eingetragene Marken von Health Level Seven International. Dieses Werkzeug ist ein unabhängiges Projekt und wird von HL7 International weder bereitgestellt noch empfohlen.</p>
 <h2>Die passenden Werkzeuge</h2>
 <p>Alle vier Formate lassen sich mit kostenlosen Browser-Tools ansehen, ohne dass Daten Ihr Gerät verlassen: der <a href="{P}">DICOM Viewer</a> für Bilder, der <a href="{LDT_V}">LDT &amp; BDT Viewer</a> für Labor- und Behandlungsdaten und der <a href="{GDT_V}">GDT Viewer</a> für Gerätedaten. Eine Anleitung zum Öffnen finden Sie unter <a href="{P}ldt-bdt-gdt-dateien-oeffnen/">LDT, BDT und GDT Dateien öffnen</a>.</p>
 <div class="mdr" role="note">⚠️ {MDR} Die Tools ersetzen weder die Praxissoftware noch die ärztliche Beurteilung.</div>''',

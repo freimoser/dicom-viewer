@@ -1,26 +1,26 @@
 :root{--bg:#0b1117;--el:#121b24;--soft:#1a2632;--bd:#263544;--tx:#e6eef5;--mu:#8ea0b2;--ac:#22d3ee;--acd:rgba(34,211,238,.14);--warn:#fbbf24;--err:#f87171;--r:12px;--f:"Segoe UI",system-ui,-apple-system,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
 *,*::before,*::after{box-sizing:border-box}html{color-scheme:dark}
 body{margin:0;font-family:var(--f);background:radial-gradient(ellipse 80% 40% at 50% -10%,rgba(34,211,238,.16),transparent),var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden}
-a{color:var(--ac)}a:hover{color:#67e8f9}
+a{color:var(--ac)}@media(hover:hover){a:hover{color:#67e8f9}}
 .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
 header.top{border-bottom:1px solid var(--bd);background:rgba(11,17,23,.85);position:sticky;top:0;z-index:5;backdrop-filter:blur(8px)}
 header.top .wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
 .brand{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--tx);text-decoration:none}.brand img{width:28px;height:28px}
-nav.main{display:flex;gap:14px;flex-wrap:wrap;font-size:.92rem}nav.main a{color:var(--mu);text-decoration:none}nav.main a:hover,nav.main a[aria-current]{color:var(--ac)}
+nav.main{display:flex;gap:14px;flex-wrap:wrap;font-size:.92rem}nav.main a{color:var(--mu);text-decoration:none}nav.main a[aria-current]{color:var(--ac)}@media(hover:hover){nav.main a:hover{color:var(--ac)}}
 .mdr{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.45);color:#fde68a;border-radius:var(--r);padding:10px 14px;margin:16px 0;font-weight:600}
 h1{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.2;margin:24px 0 8px}h2{margin-top:2em}
 .lead{color:var(--mu);font-size:1.08rem;max-width:760px}
 .drop{border:2px dashed var(--bd);border-radius:var(--r);background:var(--el);padding:28px 16px;text-align:center;margin:16px 0;transition:.15s}
 .drop.over{border-color:var(--ac);background:var(--acd)}
 .btn{display:inline-flex;align-items:center;gap:6px;background:var(--soft);border:1px solid var(--bd);color:var(--tx);padding:8px 14px;border-radius:9px;cursor:pointer;font:inherit;font-size:.92rem;text-decoration:none}
-.btn:hover{border-color:var(--ac)}.btn.pri{background:var(--ac);color:#04212a;border-color:var(--ac);font-weight:700}.btn.on{background:var(--acd);border-color:var(--ac);color:var(--ac)}
+@media(hover:hover){.btn:hover{border-color:var(--ac)}}.btn.pri{background:var(--ac);color:#04212a;border-color:var(--ac);font-weight:700}.btn.on{background:var(--acd);border-color:var(--ac);color:var(--ac)}
 .btn input{display:none}.btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .msg{background:var(--el);border:1px solid var(--bd);border-radius:9px;padding:8px 12px;margin:8px 0;font-size:.92rem}.msg.err,.err{color:var(--err)}
 .app{display:grid;grid-template-columns:260px minmax(0,1fr);gap:12px;margin:12px 0}
 .side{background:var(--el);border:1px solid var(--bd);border-radius:var(--r);padding:10px;max-height:640px;overflow:auto;min-width:0}
 .side summary{cursor:pointer;font-weight:700;margin-bottom:6px}.study-h{color:var(--mu);font-size:.82rem;margin:6px 0}
 .series{display:flex;gap:8px;align-items:center;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:9px;color:var(--tx);padding:4px;cursor:pointer;font:inherit}
-.series:hover{background:var(--soft)}.series.active{border-color:var(--ac);background:var(--acd)}.series small{display:block;color:var(--mu)}.series b{font-size:.88rem;word-break:break-word}
+@media(hover:hover){.series:hover{background:var(--soft)}}.series.active{border-color:var(--ac);background:var(--acd)}.series small{display:block;color:var(--mu)}.series b{font-size:.88rem;word-break:break-word}
 .thumb{width:64px;height:64px;border-radius:6px;flex:none;background:#000}
 .main{min-width:0}.tools{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;align-items:center}
 .tools select{background:var(--soft);color:var(--tx);border:1px solid var(--bd);border-radius:9px;padding:7px;font:inherit;font-size:.9rem;max-width:100%}

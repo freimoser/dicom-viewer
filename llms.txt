@@ -14,7 +14,7 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 - [MRT-Bilder verstehen](https://freimoser.github.io/dicom-viewer/mrt-bilder-verstehen/): T1, T2, FLAIR, Schnittebenen für Laien
 - [LDT, BDT und GDT öffnen](https://freimoser.github.io/dicom-viewer/ldt-bdt-gdt-dateien-oeffnen/)
 - [Laborbefunde (LDT) verstehen](https://freimoser.github.io/dicom-viewer/laborbefund-ldt-verstehen/)
-- [Medizinische Datenformate: DICOM, LDT, BDT, GDT](https://freimoser.github.io/dicom-viewer/medizinische-datenformate/)
+- [Medizinische Datenformate: DICOM, LDT, BDT, GDT, Vergleich mit HL7 v2, CDA und FHIR](https://freimoser.github.io/dicom-viewer/medizinische-datenformate/)
 - [Datenschutz](https://freimoser.github.io/dicom-viewer/datenschutz/)
 
 ## Verwandte Tools
