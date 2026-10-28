@@ -11,14 +11,14 @@ def art_ld(h1, desc, url):
 
 # 1 ----------------------------------------------------------------
 t1 = "LDT, BDT und GDT Dateien öffnen"
-d1 = "LDT-, BDT- und GDT-Dateien öffnen und lesen: Was die xDT-Formate sind, wie sie aufgebaut sind, typische Fehler und wie Sie sie kostenlos im Browser ansehen."
+d1 = "LDT-, BDT- und GDT-Dateien öffnen und lesen: Was die xDT-Formate sind, wie sie aufgebaut sind, Fehlerquellen und wie Sie sie kostenlos im Browser ansehen."
 PAGES.append(("ldt-bdt-gdt-dateien-oeffnen/", page("ldt-bdt-gdt-dateien-oeffnen/", "LDT, BDT und GDT Dateien öffnen – kostenlos im Browser",
   d1, t1,
   "Eine Datei mit der Endung .ldt, .bdt oder .gdt lässt sich per Doppelklick nicht sinnvoll öffnen? Hier steht, was in diesen Praxis-Dateien steckt, wie man sie liest und welche Werkzeuge helfen.",
   CTA + f'''<h2>Die xDT-Familie in einem Satz</h2>
-<p>LDT, BDT und GDT gehören zur sogenannten <strong>xDT-Familie</strong>: Datenaustauschformate, die von der Kassenärztlichen Bundesvereinigung (KBV) bzw. – im Fall von GDT – vom Qualitätsring Medizinische Software (QMS) beschrieben werden. Sie stammen aus einer Zeit, in der Daten zwischen Programmen per Diskette oder Dateiordner ausgetauscht wurden, und sind bis heute in vielen Arztpraxen im Einsatz. Das „x“ steht dabei als Platzhalter: <strong>L</strong>DT für Labor, <strong>B</strong>DT für Behandlungsdaten, <strong>G</strong>DT für Geräte.</p>
+<p>LDT, BDT und GDT gehören zur sogenannten <strong>xDT-Familie</strong>: Datenaustauschformate, die von der Kassenärztlichen Bundesvereinigung (KBV) bzw. – im Fall von GDT – vom Qualitätsring Medizinische Software (QMS) beschrieben werden. Sie stammen aus einer Zeit, in der Daten zwischen Programmen per Diskette oder Dateiordner ausgetauscht wurden. Das „x“ steht dabei als Platzhalter: <strong>L</strong>DT für Labor, <strong>B</strong>DT für Behandlungsdaten, <strong>G</strong>DT für Geräte.</p>
 <h2>Welche Datei ist wofür?</h2>
-<table><thead><tr><th>Format</th><th>Langname</th><th>Typischer Einsatz</th></tr></thead><tbody>
+<table><thead><tr><th>Format</th><th>Langname</th><th>Einsatz</th></tr></thead><tbody>
 <tr><td>LDT</td><td>Labordatenträger</td><td>Laboraufträge und Laborbefunde zwischen Praxis und Labor</td></tr>
 <tr><td>BDT</td><td>Behandlungsdatenträger</td><td>Export von Patienten- und Behandlungsdaten, etwa beim Wechsel der Praxissoftware</td></tr>
 <tr><td>GDT</td><td>Gerätedatenträger</td><td>Kopplung von Medizingeräten (EKG, Spirometrie, Ultraschall, Augenmessgeräte …) an die Praxissoftware</td></tr>
@@ -29,27 +29,27 @@ PAGES.append(("ldt-bdt-gdt-dateien-oeffnen/", page("ldt-bdt-gdt-dateien-oeffnen/
 <li><strong>4 Ziffern Feldkennung</strong> – eine Nummer, die festlegt, was in der Zeile steht,</li>
 <li><strong>der Inhalt</strong> – etwa ein Name, ein Datum oder ein Messwert,</li>
 <li>und am Ende <strong>Wagenrücklauf und Zeilenvorschub</strong> (CR LF).</li></ul>
-<p>Eine Zeile wie <code>0193101Mustermann</code> bedeutet also: 19 Bytes lang, Feld 3101 (Nachname), Inhalt „Mustermann“. Die Rechnung: 3 + 4 + 10 Zeichen + 2 Zeilenendezeichen = 19. Stimmt die Längenangabe nicht, ist die Zeile streng genommen fehlerhaft. Genau solche Abweichungen sind eine häufige Ursache, wenn ein Import in der Praxissoftware scheitert.</p>
+<p>Eine Zeile wie <code>0193101Mustermann</code> bedeutet also: 19 Bytes lang, Feld 3101 (Nachname), Inhalt „Mustermann“. Die Rechnung: 3 + 4 + 10 Zeichen + 2 Zeilenendezeichen = 19. Stimmt die Längenangabe nicht, ist die Zeile streng genommen fehlerhaft. Genau solche Abweichungen sind eine mögliche Ursache, wenn ein Import in der Praxissoftware scheitert.</p>
 <p>Mehrere Zeilen bilden einen <strong>Satz</strong>. Welche Art Satz vorliegt, steht im Feld <code>8000</code> (Satzart). Bei GDT zeigt zum Beispiel die Satzart 6302 an, dass die Praxissoftware eine neue Untersuchung anfordert, und 6310, dass ein Gerät Untersuchungsdaten zurückschickt.</p>
 <h2>Warum normale Programme scheitern</h2>
 <p>Technisch könnte man eine xDT-Datei im Editor öffnen. Praktisch hilft das wenig:</p>
 <ul><li><strong>Kryptische Nummern:</strong> Statt „Geburtsdatum“ steht dort <code>3103</code>. Ohne Feldkatalog versteht man den Inhalt nicht.</li>
-<li><strong>Zeichensatz:</strong> Ältere Dateien sind oft im DOS-Zeichensatz (Codepage 437) oder in ISO 8859-1 gespeichert. Umlaute erscheinen im Windows-Editor dann als Sonderzeichen. Welcher Zeichensatz gilt, steht meist im Feld <code>9206</code>.</li>
-<li><strong>Endungen variieren:</strong> Viele Systeme verwenden statt .ldt oder .gdt eigene Endungen oder nummerierte Dateien. Der Inhalt ist trotzdem xDT.</li>
+<li><strong>Zeichensatz:</strong> Ältere Dateien können im DOS-Zeichensatz (Codepage 437) oder in ISO 8859-1 gespeichert sein. Umlaute erscheinen im Windows-Editor dann als Sonderzeichen. Welcher Zeichensatz gilt, steht im Feld <code>9206</code>.</li>
+<li><strong>Endungen variieren:</strong> Systeme können statt .ldt oder .gdt eigene Endungen oder nummerierte Dateien verwenden. Der Inhalt ist trotzdem xDT.</li>
 <li><strong>Große Dateien:</strong> Ein BDT-Export einer ganzen Praxis kann sehr umfangreich sein. Ein Editor zeigt dann tausende Zeilen ohne Struktur.</li></ul>
 <h2>Schritt für Schritt: Datei im Browser ansehen</h2>
 <ol><li>Für <strong>LDT oder BDT</strong> den <a href="{LDT_V}">LDT &amp; BDT Viewer</a> öffnen, für <strong>GDT</strong> den <a href="{GDT_V}">GDT Viewer</a>.</li>
 <li>Die Datei per Drag &amp; Drop auf die Seite ziehen oder über den Dateidialog wählen.</li>
 <li>Der Viewer übersetzt die Feldkennungen in Klartext, gruppiert die Sätze und zeigt Auffälligkeiten wie falsche Zeilenlängen an.</li>
 <li>Bei Bedarf Patientendaten ausblenden, bevor Sie einen Screenshot an den Software-Support schicken.</li></ol>
-<p>Die Dateien werden dabei ausschließlich in Ihrem Browser gelesen. Das ist bei Gesundheitsdaten kein Nebendetail: Laborbefunde und Behandlungsdaten gehören zu den besonders geschützten Kategorien personenbezogener Daten nach Art. 9 DSGVO. Ein Online-Konverter, der die Datei auf einen fremden Server lädt, ist für den Praxisalltag deshalb meist keine gute Idee.</p>
-<h2>Typische Situationen aus der Praxis</h2>
+<p>Die Dateien werden dabei ausschließlich in Ihrem Browser gelesen. Das ist bei Gesundheitsdaten kein Nebendetail: Laborbefunde und Behandlungsdaten gehören zu den besonders geschützten Kategorien personenbezogener Daten nach Art. 9 DSGVO. Ein Online-Konverter, der die Datei auf einen fremden Server lädt, verschickt diese Daten an Dritte und ist deshalb keine gute Idee.</p>
+<h2>Situationen aus der Praxis</h2>
 <h3>Der Laborimport bricht ab</h3>
-<p>Die Praxissoftware meldet beim Einlesen eines Laborbefunds einen Fehler. Im Viewer sieht man oft sofort, woran es liegt: eine Zeile mit falscher Längenangabe, ein unerwarteter Zeichensatz oder ein fehlendes Pflichtfeld. Mit dieser Information kann der Support des Labors oder des Softwareherstellers deutlich schneller helfen.</p>
+<p>Die Praxissoftware meldet beim Einlesen eines Laborbefunds einen Fehler. Im Viewer lässt sich nachvollziehen, woran es liegen kann: eine Zeile mit falscher Längenangabe, ein unerwarteter Zeichensatz oder ein fehlendes Pflichtfeld. Mit dieser Information kann der Support des Labors oder des Softwareherstellers deutlich schneller helfen.</p>
 <h3>Praxisübernahme oder Softwarewechsel</h3>
-<p>Beim Wechsel der Praxissoftware wird häufig ein BDT-Export erzeugt. Vor dem Import lohnt ein Blick hinein: Sind alle Patienten enthalten? Sind die Umlaute korrekt? Fehlen Diagnosen oder Leistungsziffern? Eine Stichprobe im Viewer erspart böse Überraschungen nach der Umstellung.</p>
+<p>Beim Wechsel der Praxissoftware kann ein BDT-Export erzeugt werden. Vor dem Import lohnt ein Blick hinein: Sind alle Patienten enthalten? Sind die Umlaute korrekt? Fehlen Diagnosen oder Leistungsziffern? Eine Stichprobe im Viewer erspart böse Überraschungen nach der Umstellung.</p>
 <h3>Ein Gerät überträgt nichts</h3>
-<p>Wenn EKG oder Lungenfunktion keine Ergebnisse an die Praxissoftware zurückliefern, liegt das häufig an der GDT-Konfiguration: falsches Austauschverzeichnis, abweichende Dateinamen oder Kürzel für Sender und Empfänger. Im <a href="{GDT_V}">GDT Viewer</a> erkennt man, ob die Anforderung (6302) überhaupt beim Gerät ankommt und was das Gerät zurückschreibt.</p>
+<p>Wenn EKG oder Lungenfunktion keine Ergebnisse an die Praxissoftware zurückliefern, kann die GDT-Konfiguration die Ursache sein: falsches Austauschverzeichnis, abweichende Dateinamen oder Kürzel für Sender und Empfänger. Im <a href="{GDT_V}">GDT Viewer</a> erkennt man, ob die Anforderung (6302) überhaupt beim Gerät ankommt und was das Gerät zurückschreibt.</p>
 <h2>Und DICOM?</h2>
 <p>Bilder aus Röntgen, CT, MRT oder Ultraschall werden nicht als xDT, sondern als <strong>DICOM</strong> gespeichert. Dafür ist der <a href="{P}">DICOM Viewer</a> auf dieser Seite gedacht. Wie die Formate zusammenspielen, erklärt der Artikel <a href="{P}medizinische-datenformate/">Medizinische Datenformate in der Praxis</a>.</p>
 <div class="mdr" role="note">⚠️ Die verlinkten Viewer dienen der Ansicht und Fehlersuche. {MDR}</div>''',
@@ -64,7 +64,7 @@ t2 = "Medizinische Datenformate in der Praxis: DICOM, LDT, BDT, GDT"
 d2 = "DICOM, LDT, BDT, GDT, HL7 v2, CDA und FHIR verständlich erklärt: Wofür jedes Format da ist, wo Fehler entstehen und welche Viewer helfen."
 PAGES.append(("medizinische-datenformate/", page("medizinische-datenformate/", "Medizinische Datenformate: DICOM, LDT, BDT, GDT erklärt",
   d2, t2,
-  "In einer Arztpraxis laufen täglich Daten zwischen Praxissoftware, Labor, Geräten und Radiologie hin und her. Vier Formate tauchen dabei immer wieder auf. Ein Überblick für Praxisteams, IT-Betreuer und Neugierige.",
+  "In einer Arztpraxis laufen täglich Daten zwischen Praxissoftware, Labor, Geräten und Radiologie hin und her. Vier Formate stehen hier im Mittelpunkt, dazu kommt ein Vergleich mit HL7 v2, HL7 CDA und FHIR. Ein Überblick für Praxisteams, IT-Betreuer und Neugierige.",
   CTA + f'''<h2>Der Überblick</h2>
 <table><thead><tr><th>Format</th><th>Wofür</th><th>Art der Datei</th><th>Passender Viewer</th></tr></thead><tbody>
 <tr><td><strong>DICOM</strong></td><td>Medizinische Bilder: Röntgen, CT, MRT, Ultraschall</td><td>Binärdatei mit Bild und Metadaten</td><td><a href="{P}">DICOM Viewer</a></td></tr>
@@ -73,11 +73,11 @@ PAGES.append(("medizinische-datenformate/", page("medizinische-datenformate/", "
 <tr><td><strong>GDT</strong></td><td>Anbindung von Medizingeräten</td><td>Textdatei im xDT-Zeilenformat</td><td><a href="{GDT_V}">GDT Viewer</a></td></tr>
 </tbody></table>
 <h2>DICOM – der internationale Bildstandard</h2>
-<p>DICOM (Digital Imaging and Communications in Medicine) ist ein weltweiter Standard, der nicht nur ein Dateiformat, sondern auch ein Netzwerkprotokoll beschreibt. Modalitäten wie CT oder MRT schicken ihre Bilder per DICOM an ein Bildarchiv (PACS); Patientinnen und Patienten erhalten sie häufig auf CD oder per Download-Link. Eine DICOM-Datei enthält neben den Pixeldaten eine lange Liste von Angaben, die über Tag-Nummern wie <code>(0010,0010)</code> für den Patientennamen adressiert werden. Mehr dazu: <a href="{P}radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> und <a href="{P}mrt-bilder-verstehen/">MRT-Bilder verstehen</a>.</p>
+<p>DICOM (Digital Imaging and Communications in Medicine) ist ein internationaler Standard, der nicht nur ein Dateiformat, sondern auch ein Netzwerkprotokoll beschreibt. Modalitäten wie CT oder MRT schicken ihre Bilder per DICOM an ein Bildarchiv (PACS); Patientinnen und Patienten erhalten sie auf CD oder per Download-Link. Eine DICOM-Datei enthält neben den Pixeldaten eine lange Liste von Angaben, die über Tag-Nummern wie <code>(0010,0010)</code> für den Patientennamen adressiert werden. Mehr dazu: <a href="{P}radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> und <a href="{P}mrt-bilder-verstehen/">MRT-Bilder verstehen</a>.</p>
 <h2>xDT – die deutschen Praxisformate</h2>
-<p>LDT, BDT und GDT sind deutsche Formate aus der xDT-Familie. Sie sind deutlich einfacher als DICOM: reine Textdateien, in denen jede Zeile aus Längenangabe, vierstelliger Feldkennung und Inhalt besteht. Diese Einfachheit ist ihr großer Vorteil – fast jede Praxissoftware kann sie schreiben und lesen, und man kann sie notfalls mit einem Texteditor untersuchen. Der Nachteil: Ohne Feldkatalog sind sie für Menschen kaum lesbar, und kleine Abweichungen von der Spezifikation führen schnell zu Importfehlern.</p>
+<p>LDT, BDT und GDT sind deutsche Formate aus der xDT-Familie. Sie sind deutlich einfacher als DICOM: reine Textdateien, in denen jede Zeile aus Längenangabe, vierstelliger Feldkennung und Inhalt besteht. Diese Einfachheit ist ihr Vorteil: Textdateien lassen sich ohne Spezialformat schreiben und lesen, und man kann sie notfalls mit einem Texteditor untersuchen. Der Nachteil: Ohne Feldkatalog sind sie für Menschen kaum lesbar, und kleine Abweichungen von der Spezifikation führen schnell zu Importfehlern.</p>
 <h3>LDT: Labor ↔ Praxis</h3>
-<p>Die Praxis schickt einen Auftrag ans Labor, das Labor liefert den Befund als LDT-Datei zurück – meist automatisiert über eine Laborsoftware oder einen sicheren Übertragungsweg. In der Praxissoftware landen die Werte dann in der Patientenakte, inklusive Einheit, Referenzbereich und Kennzeichnung auffälliger Werte. Wie man einen solchen Befund liest, erklärt der Artikel <a href="{P}laborbefund-ldt-verstehen/">Laborbefunde (LDT) verstehen</a>.</p>
+<p>Die Praxis schickt einen Auftrag ans Labor, das Labor liefert den Befund als LDT-Datei zurück – etwa automatisiert über eine Laborsoftware oder einen sicheren Übertragungsweg. In der Praxissoftware landen die Werte dann in der Patientenakte, inklusive Einheit, Referenzbereich und Kennzeichnung auffälliger Werte. Wie man einen solchen Befund liest, erklärt der Artikel <a href="{P}laborbefund-ldt-verstehen/">Laborbefunde (LDT) verstehen</a>.</p>
 <h3>BDT: Praxis ↔ Praxis</h3>
 <p>BDT wurde für den Austausch von Behandlungsdaten zwischen Praxisprogrammen entworfen. Heute begegnet man ihm vor allem beim Softwarewechsel, bei Praxisübernahmen oder wenn Daten für Auswertungen exportiert werden. Ein BDT-Export kann Stammdaten, Diagnosen, Leistungen, Befundtexte und vieles mehr enthalten – entsprechend groß und sensibel ist er.</p>
 <h3>GDT: Praxis ↔ Gerät</h3>
@@ -89,16 +89,14 @@ PAGES.append(("medizinische-datenformate/", page("medizinische-datenformate/", "
 <li>Eine Überweisung zur Radiologie ergibt ein MRT. Die Bilder kommen als <strong>DICOM</strong> – auf CD, per Portal oder direkt ins Bildarchiv.</li>
 <li>Jahre später wechselt die Praxis die Software. Die Altdaten werden per <strong>BDT</strong> (oder einem herstellereigenen Weg) übertragen.</li></ol>
 <h2>Wo es in der Praxis hakt</h2>
-<ul><li><strong>Zeichensätze:</strong> Umlautfehler sind bei xDT der Klassiker, weil ältere Systeme den DOS-Zeichensatz verwenden.</li>
-<li><strong>Versionen:</strong> Von LDT gibt es mehrere Versionen (verbreitet sind LDT 2 und LDT 3), die sich im Aufbau unterscheiden. Sender und Empfänger müssen zueinander passen.</li>
-<li><strong>Herstellerdialekte:</strong> Manche Programme nutzen eigene Felder oder interpretieren Pflichtfelder großzügig.</li>
-<li><strong>Bilder ohne Viewer:</strong> Bei DICOM liegt das Problem oft nicht in der Datei, sondern darin, dass der CD-Viewer auf dem eigenen Rechner nicht startet.</li>
+<ul><li><strong>Zeichensätze:</strong> Umlautfehler können bei xDT entstehen, wenn Dateien im DOS-Zeichensatz gespeichert sind.</li>
+<li><strong>Versionen:</strong> Von LDT gibt es mehrere Versionen (zum Beispiel LDT 2 und LDT 3), die sich im Aufbau unterscheiden. Sender und Empfänger müssen zueinander passen.</li>
+<li><strong>Herstellerdialekte:</strong> Programme können eigene Felder nutzen oder Pflichtfelder großzügig interpretieren.</li>
+<li><strong>Bilder ohne Viewer:</strong> Bei DICOM kann das Problem statt in der Datei auch darin liegen, dass der CD-Viewer auf dem eigenen Rechner nicht startet.</li>
 <li><strong>Datenschutz bei der Fehlersuche:</strong> Wer eine fehlerhafte Datei an den Support schickt, verschickt Gesundheitsdaten. Besser: lokal ansehen, Fehler eingrenzen, nur das Nötige weitergeben.</li></ul>
-<h2>Und was ist mit HL7 und FHIR?</h2>
-<p>Im Krankenhaus ist HL7 seit Langem verbreitet, und mit FHIR gibt es einen modernen, webbasierten Standard, auf dem auch viele Anwendungen der Telematikinfrastruktur aufbauen, etwa die elektronische Patientenakte. Für die niedergelassene Praxis bleiben die xDT-Formate aber vorerst im Alltag präsent – gerade bei Labor- und Geräteanbindungen.</p>
-<h2>HL7 v2, HL7 v3/CDA und FHIR im Vergleich</h2>
+<h2>HL7 v2, HL7 CDA und FHIR im Vergleich</h2>
 <p>Neben DICOM und den xDT-Formaten gibt es die HL7-Standardfamilie. Nach der Startseite von HL7 Deutschland gehören HL7 v2.x, CDA, V3 und FHIR dazu. Die Tabelle stellt drei Vertreter nebeneinander. Sie macht keine Aussage zur Nutzung in der Praxis, sondern zeigt nur, wie die Daten aufgebaut sind und wofür die zitierten Quellen das Format beschreiben.</p>
-<table><thead><tr><th>Format</th><th>Datenform</th><th>Typischer Gegenstand laut Quelle</th><th>Im Browser ansehen</th></tr></thead><tbody>
+<table><thead><tr><th>Format</th><th>Datenform</th><th>Gegenstand laut Quelle</th><th>Im Browser ansehen</th></tr></thead><tbody>
 <tr><td><strong>HL7 v2</strong></td><td>Textnachricht aus Segmenten; ein Segment wird per Pipe-Zeichen in Felder geteilt, ein Feld in Komponenten</td><td>Verwaltung, Aufträge und Ergebnisse im Krankenhaus</td><td><a href="{HL7V2_V}">HL7-v2-Nachricht in Segmente und Felder zerlegen</a></td></tr>
 <tr><td><strong>HL7 CDA</strong> (Clinical Document Architecture)</td><td>XML-Dokument; beim eArztbrief nach der KBV-Richtlinie PDF/A plus XML nach dem VHitG-Arztbrief-Leitfaden v1.50</td><td>Klinische Dokumente wie der Arztbrief, mit Kopf (Patient, Autor, Verwahrer) und Abschnitten</td><td><a href="{CDA_V}">CDA-Arztbrief als lesbaren Brief anzeigen</a></td></tr>
 <tr><td><strong>FHIR</strong> (Fast Healthcare Interoperability Resources)</td><td>Ressourcen wie Patient, Observation oder Encounter als JSON oder XML, austauschbar über REST-Schnittstellen; mehrere Ressourcen lassen sich in einem Bundle bündeln</td><td>Gesundheitsdaten als einzelne Ressourcen; ein Bundle vom Typ document mit einer Composition als erster Ressource bildet ein Dokument ab</td><td><a href="{FHIR_V}">FHIR-Ressource oder Bundle als Karte und Baum öffnen</a></td></tr>
@@ -109,14 +107,14 @@ PAGES.append(("medizinische-datenformate/", page("medizinische-datenformate/", "
 <p>Alle vier Formate lassen sich mit kostenlosen Browser-Tools ansehen, ohne dass Daten Ihr Gerät verlassen: der <a href="{P}">DICOM Viewer</a> für Bilder, der <a href="{LDT_V}">LDT &amp; BDT Viewer</a> für Labor- und Behandlungsdaten und der <a href="{GDT_V}">GDT Viewer</a> für Gerätedaten. Eine Anleitung zum Öffnen finden Sie unter <a href="{P}ldt-bdt-gdt-dateien-oeffnen/">LDT, BDT und GDT Dateien öffnen</a>.</p>
 <div class="mdr" role="note">⚠️ {MDR} Die Tools ersetzen weder die Praxissoftware noch die ärztliche Beurteilung.</div>''',
   [("Ist DICOM auch ein xDT-Format?", "Nein. DICOM ist ein internationaler Bildstandard mit binärem Dateiformat und eigenem Netzwerkprotokoll. xDT sind deutsche, textbasierte Austauschformate."),
-   ("Welches Format nutzt das Labor?", "In deutschen Arztpraxen kommen Laborbefunde typischerweise als LDT-Datei."),
+   ("Welches Format nutzt das Labor?", "Für Laboraufträge und Laborbefunde dient das xDT-Format LDT."),
    ("Kann ich alle Formate mit einem Programm öffnen?", "Dafür gibt es spezialisierte Viewer: den DICOM Viewer für Bilder, den LDT & BDT Viewer und den GDT Viewer. Alle laufen kostenlos im Browser."),
-   ("Sind LDT, BDT und GDT veraltet?", "Sie sind alt, aber weiterhin weit verbreitet. Moderne Standards wie FHIR kommen hinzu, ersetzen die xDT-Formate im Praxisalltag aber nicht von heute auf morgen.")],
+   ("Sind LDT, BDT und GDT veraltet?", "Diese Seite bewertet das nicht. Die xDT-Formate sind textbasierte Zeilenformate; FHIR beschreibt Daten dagegen als Ressourcen in JSON oder XML. Welches Format gebraucht wird, legt die jeweilige Schnittstelle fest.")],
   art_ld(t2, d2, BASE + "medizinische-datenformate/"))))
 
 # 3 ----------------------------------------------------------------
 t3 = "Laborbefunde (LDT) verstehen"
-d3 = "Laborbefund als LDT-Datei verstehen: Aufbau, wichtige Felder für Test, Ergebnis, Einheit und Referenzbereich, Kennzeichen auffälliger Werte und typische Stolperfallen."
+d3 = "Laborbefund als LDT-Datei verstehen: Aufbau, wichtige Felder für Test, Ergebnis, Einheit und Referenzbereich, Kennzeichen auffälliger Werte und Stolperfallen."
 PAGES.append(("laborbefund-ldt-verstehen/", page("laborbefund-ldt-verstehen/", "Laborbefunde (LDT) verstehen – Felder, Werte, Kennzeichen",
   d3, t3,
   "Was steht eigentlich in einer LDT-Datei aus dem Labor, und wie wird daraus der Befund in der Praxissoftware? Eine Lesehilfe für Praxisteams, IT-Betreuer und alle, die bei einem Importfehler genauer hinschauen müssen.",
@@ -142,12 +140,12 @@ PAGES.append(("laborbefund-ldt-verstehen/", page("laborbefund-ldt-verstehen/", "
 </tbody></table>
 <p>Die genauen Feldnummern und Pflichtfelder hängen von der LDT-Version ab und sind im Feldkatalog der KBV beschrieben. Die Beispielwerte oben sind frei gewählt und dienen nur der Veranschaulichung.</p>
 <h2>Referenzbereiche richtig lesen</h2>
-<p>Ein Laborwert ist für sich allein wenig aussagekräftig. Erst der Referenzbereich zeigt, wo er einzuordnen ist – und dieser Bereich ist nicht universell: Er hängt von der Messmethode des Labors, oft auch von Alter und Geschlecht ab. Deshalb liefert das Labor ihn im Befund mit. Zwei Labore können für denselben Test unterschiedliche Referenzbereiche und sogar unterschiedliche Einheiten angeben (zum Beispiel mg/dl gegenüber mmol/l). Werte aus verschiedenen Laboren sollte man daher nur mit Vorsicht direkt vergleichen.</p>
+<p>Ein Laborwert ist für sich allein wenig aussagekräftig. Erst der Referenzbereich zeigt, wo er einzuordnen ist – und dieser Bereich ist nicht universell: Er hängt von der Messmethode des Labors ab und kann auch von Alter und Geschlecht abhängen. Deshalb liefert das Labor ihn im Befund mit. Zwei Labore können für denselben Test unterschiedliche Referenzbereiche und sogar unterschiedliche Einheiten angeben (zum Beispiel mg/dl gegenüber mmol/l). Werte aus verschiedenen Laboren sollte man daher nur mit Vorsicht direkt vergleichen.</p>
 <h2>Kennzeichen für auffällige Werte</h2>
-<p>Damit auffällige Werte in der Praxissoftware hervorgehoben werden, setzt das Labor einen Grenzwertindikator. Üblich sind Buchstaben wie <strong>H</strong> (hoch) und <strong>L</strong> (niedrig), oft auch abgestufte Kennzeichen für stark abweichende Werte. Wichtig: Ein Kennzeichen bedeutet nur, dass der Wert außerhalb des angegebenen Bereichs liegt. Es sagt nichts darüber, ob das medizinisch relevant ist.</p>
+<p>Damit auffällige Werte in der Praxissoftware hervorgehoben werden, setzt das Labor einen Grenzwertindikator. Möglich sind Buchstaben wie <strong>H</strong> (hoch) und <strong>L</strong> (niedrig) sowie abgestufte Kennzeichen für stark abweichende Werte. Wichtig: Ein Kennzeichen bedeutet nur, dass der Wert außerhalb des angegebenen Bereichs liegt. Es sagt nichts darüber, ob das medizinisch relevant ist.</p>
 <h2>Freitexte, Anhänge und Folgebefunde</h2>
-<p>Nicht jedes Ergebnis ist eine Zahl. Mikrobiologische Befunde, Antibiogramme oder Kommentare des Labors stehen häufig als Freitext in der Datei. Außerdem kennt LDT den Unterschied zwischen <strong>Teil- und Endbefunden</strong>: Manche Werte liegen nach Stunden vor, andere erst nach Tagen. Das Labor schickt dann mehrere Dateien zum selben Auftrag. Wer sich wundert, warum ein Befund „doppelt“ auftaucht, findet die Erklärung meist im Befundstatus.</p>
-<h2>Typische Stolperfallen beim Import</h2>
+<p>Nicht jedes Ergebnis ist eine Zahl. Mikrobiologische Befunde, Antibiogramme oder Kommentare des Labors können als Freitext in der Datei stehen. Außerdem kennt LDT den Unterschied zwischen <strong>Teil- und Endbefunden</strong>: Manche Werte liegen nach Stunden vor, andere erst nach Tagen. Das Labor schickt dann mehrere Dateien zum selben Auftrag. Wer sich wundert, warum ein Befund „doppelt“ auftaucht, findet die Erklärung möglicherweise im Befundstatus.</p>
+<h2>Stolperfallen beim Import</h2>
 <ul><li><strong>Falsche Zeilenlänge:</strong> Wird eine Datei nachträglich bearbeitet oder mit falscher Kodierung gespeichert, stimmen die Längenangaben nicht mehr.</li>
 <li><strong>Zeichensatz:</strong> Umlaute in Patientennamen oder Testbezeichnungen werden falsch dargestellt, wenn Sender und Empfänger unterschiedliche Zeichensätze annehmen.</li>
 <li><strong>Zuordnung zum Patienten:</strong> Wenn Patientennummer, Name oder Geburtsdatum nicht zu den Daten in der Praxissoftware passen, landet der Befund in einer Warteschlange zur manuellen Zuordnung.</li>
@@ -156,7 +154,7 @@ PAGES.append(("laborbefund-ldt-verstehen/", page("laborbefund-ldt-verstehen/", "
 <h2>Selbst nachsehen – ohne Upload</h2>
 <p>Im <a href="{LDT_V}">LDT &amp; BDT Viewer</a> laden Sie eine LDT-Datei per Drag &amp; Drop. Der Viewer übersetzt Feldkennungen in Klartext, stellt die Ergebnisse tabellarisch mit Einheit und Referenzbereich dar und weist auf formale Fehler hin. Da die Datei nur lokal gelesen wird, eignet sich das auch für echte Befunde – etwa um vor einem Anruf beim Labor-Support zu sehen, welche Zeile das Problem verursacht. Hintergründe zu den anderen Formaten finden Sie unter <a href="{P}medizinische-datenformate/">DICOM, LDT, BDT und GDT im Vergleich</a>.</p>
 <div class="mdr" role="note">⚠️ {MDR} Laborwerte immer ärztlich beurteilen lassen.</div>''',
-  [("Was bedeutet das H hinter einem Laborwert?", "H steht üblicherweise für einen Wert oberhalb des vom Labor angegebenen Referenzbereichs, L für einen Wert darunter. Über die medizinische Bedeutung sagt das allein nichts aus."),
+  [("Was bedeutet das H hinter einem Laborwert?", "H steht für einen Wert oberhalb des vom Labor angegebenen Referenzbereichs, L für einen Wert darunter. Über die medizinische Bedeutung sagt das allein nichts aus."),
    ("Warum unterscheiden sich Referenzbereiche zwischen Laboren?", "Sie hängen von Messmethode, Geräten und Referenzpopulation ab und werden deshalb vom jeweiligen Labor mitgeliefert."),
    ("Kann ich eine LDT-Datei selbst lesen?", "Ja, mit einem LDT-Viewer, der die Feldnummern in Klartext übersetzt. Der LDT & BDT Viewer läuft kostenlos und ohne Upload im Browser."),
    ("Welche LDT-Version habe ich?", "Die Version steht im Kopfsatz der Datei. Der Viewer zeigt sie direkt an.")],

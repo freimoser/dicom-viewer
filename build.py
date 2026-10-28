@@ -4,7 +4,7 @@ import json, os, html
 BASE = "https://freimoser.github.io/dicom-viewer/"
 P = "/dicom-viewer/"
 LASTMOD = "2026-10-17"
-LASTMOD_BY = {"medizinische-datenformate/": "2026-10-29"}
+LASTMOD_BY = {p: "2026-10-29" for p in ["", "dicom-in-jpg/", "dicom-viewer-mac/", "laborbefund-ldt-verstehen/", "ldt-bdt-gdt-dateien-oeffnen/", "medizinische-datenformate/", "mrt-bilder-verstehen/", "radiologie-cd-oeffnen/"]}
 GA_ID = ""  # GA4 Mess-ID, z. B. "G-XXXXXXX". Leer = kein Analytics, kein Banner.
 LINKEDIN = "https://www.linkedin.com/in/thomas-freimoser/"
 MDR = "Nur zur Ansicht, nicht zur Diagnose. Kein Medizinprodukt."
@@ -124,8 +124,8 @@ def samples_html():
 <div class="sgrid">{cards}</div>
 <h3>Weitere Beispieldaten zum Selbst-Ausprobieren</h3>
 <ul class="srcs">
-<li><a href="https://www.charruasoft.com/dicom-samples/" rel="noopener">CharruaSoft DICOM Samples</a>: synthetische Dateien in vielen Formaten und Kompressionen (CC0).</li>
-<li><a href="https://github.com/pydicom/pydicom-data" rel="noopener">pydicom-data</a>: Testdateien des Python-Projekts pydicom, auch mit seltenen Formaten.</li>
+<li><a href="https://www.charruasoft.com/dicom-samples/" rel="noopener">CharruaSoft DICOM Samples</a>: synthetische Dateien in verschiedenen Formaten und Kompressionen (CC0).</li>
+<li><a href="https://github.com/pydicom/pydicom-data" rel="noopener">pydicom-data</a>: Testdateien des Python-Projekts pydicom, auch mit besonderen Formaten.</li>
 <li><a href="https://www.cancerimagingarchive.net/" rel="noopener">The Cancer Imaging Archive (TCIA)</a>: große, anonymisierte Forschungsdatensätze. Die Lizenz gilt je Datensatz.</li>
 <li><a href="https://doi.org/10.5281/zenodo.3829502" rel="noopener">Zenodo 3829502</a>: 3D-CT-Daten von Katzen-Oberschenkelknochen (CC BY 4.0), Quelle unseres Katzen-Beispiels.</li>
 <li><a href="https://www.osirix-viewer.com/resources/dicom-image-library/" rel="noopener">OsiriX DICOM Image Library</a> und <a href="https://www.dicomlibrary.com/" rel="noopener">DICOM Library</a>: eigene Nutzungsbedingungen, nicht von uns weitergegeben. Bitte dort selbst prüfen und herunterladen.</li>
@@ -164,7 +164,7 @@ TOOL = '''
 <div class="stage"><canvas id="view" aria-label="DICOM-Bild"></canvas><div class="ov" id="ovTL"></div><div class="ov" id="ovTR"></div><div class="ov" id="ovBL"></div><div class="ov" id="ovBR"><span id="wlLbl"></span>  <span id="zoomLbl"></span></div><div class="err" id="err" hidden></div></div>
 <div class="slicebar"><input type="range" id="slice" min="0" max="0" value="0" aria-label="Schicht"><span id="sliceLbl">–</span></div>
 <div class="checks"><label><input type="checkbox" id="phiToggle"> Patientendaten anzeigen</label><label><input type="checkbox" id="phiExport" disabled> Name im Export einbrennen</label></div>
-<div class="mdr" style="margin:8px 0">⚠️ Vor dem Export: <strong>Bild auf eingebrannte Namen prüfen!</strong> Bei Ultraschall- und Röntgenaufnahmen steht der Name oft direkt im Pixelbild. Mit „⬛ Schwärzen“ ein Rechteck darüber ziehen – die Schwärzung wird mit exportiert.</div>
+<div class="mdr" style="margin:8px 0">⚠️ Vor dem Export: <strong>Bild auf eingebrannte Namen prüfen!</strong> Bei Ultraschall- und Röntgenaufnahmen kann der Name direkt im Pixelbild stehen. Mit „⬛ Schwärzen“ ein Rechteck darüber ziehen – die Schwärzung wird mit exportiert.</div>
 <p style="color:var(--mu);font-size:.88rem;margin:0">🔒 <strong>Anonymer Export:</strong> PNG und JPG enthalten standardmäßig nur das Bild – ohne Name, Geburtsdatum, ID oder DICOM-Metadaten. Achtung: Manche Geräte brennen Text direkt ins Bild; den prüfen Sie bitte vor dem Weitergeben selbst. Mausrad = Schichten, <kbd>Strg</kbd>+Mausrad = Zoom, mittlere Taste = Verschieben.</p>
 <div class="tagbox"><h3>DICOM-Tags</h3><input id="tagFilter" placeholder="Tags filtern, z. B. 0008 oder Modalität"><div class="tablewrap"><table><thead><tr><th>Tag</th><th>VR</th><th>Name</th><th>Wert</th></tr></thead><tbody id="tagBody"></tbody></table></div></div>
 </div>
@@ -194,16 +194,16 @@ PAGES.append(("", page("", "DICOM Viewer kostenlos online – ohne Installation,
 <div class="card"><h3>🕶️ Anonymer Export</h3><p>Exportierte Bilder enthalten nur Pixel – keinen Namen, kein Geburtsdatum, keine Metadaten. Ideal, um ein Bild an Familie, Trainer oder ein Forum weiterzugeben.</p></div>
 <div class="card"><h3>💿 CD-tauglich</h3><p>DICOMDIR wird erkannt, Dateien ohne Endung (z. B. <code>IM000001</code>) werden über die DICOM-Kennung „DICM“ gefunden.</p></div></div>
 <h2>Welche Dateien werden unterstützt?</h2>
-<p>Unkomprimierte DICOM-Bilder (Implicit/Explicit VR Little Endian, Explicit VR Big Endian) in 8, 16 und 32 Bit, Graustufen und Farbe, auch Mehrbild-Dateien (Multiframe) wie Ultraschall-Clips. Dazu alle auf Radiologie-CDs üblichen Kompressionen: JPEG Baseline und Extended (8/12 Bit), JPEG Lossless, JPEG-LS (verlustfrei und nahezu verlustfrei), JPEG 2000 (verlustfrei und verlustbehaftet) sowie RLE. Die nötigen Decoder werden erst nachgeladen, wenn ein solches Bild auftaucht – ebenfalls lokal, ohne dass Bilddaten Ihr Gerät verlassen. Nur seltene Exoten (z. B. Deflate, HTJ2K, Video-Formate) zeigen einen klaren Hinweis statt eines leeren Bildes.</p>
+<p>Unkomprimierte DICOM-Bilder (Implicit/Explicit VR Little Endian, Explicit VR Big Endian) in 8, 16 und 32 Bit, Graustufen und Farbe, auch Mehrbild-Dateien (Multiframe) wie Ultraschall-Clips. Dazu diese Kompressionen: JPEG Baseline und Extended (8/12 Bit), JPEG Lossless, JPEG-LS (verlustfrei und nahezu verlustfrei), JPEG 2000 (verlustfrei und verlustbehaftet) sowie RLE. Die nötigen Decoder werden erst nachgeladen, wenn ein solches Bild auftaucht – ebenfalls lokal, ohne dass Bilddaten Ihr Gerät verlassen. Bei Deflate, HTJ2K und Video-Formaten erscheint ein klarer Hinweis statt eines leeren Bildes.</p>
 <h2>Was der Viewer bewusst nicht kann</h2>
 <p>Es gibt keine Mess-, Markierungs- oder Befundwerkzeuge. Der Viewer ist zum Anschauen gedacht, etwa um vor dem Arzttermin die eigenen Bilder zu sehen. {MDR} Die Beurteilung Ihrer Bilder gehört in ärztliche Hände.</p>
 <p>Mehr dazu: <a href="radiologie-cd-oeffnen/">Radiologie-CD öffnen</a> · <a href="dicom-in-jpg/">DICOM in JPG umwandeln</a> · <a href="dicom-viewer-mac/">DICOM am Mac</a> · <a href="dicom-iphone/">DICOM am iPhone</a> · <a href="mrt-bilder-verstehen/">MRT-Bilder verstehen</a> · <a href="medizinische-datenformate/">DICOM, LDT, BDT, GDT</a></p>
 <h2>Was ist DICOM?</h2>
-<p>DICOM (Digital Imaging and Communications in Medicine) ist der weltweite Standard für medizinische Bilder. Eine DICOM-Datei enthält das Bild selbst und zusätzlich Angaben wie Patientenname, Untersuchungsdatum, Gerät, Schichtdicke und Kontrastvorgaben. Deshalb öffnen normale Bildbetrachter diese Dateien nicht: Sie kennen weder das Format noch die 12- oder 16-Bit-Graustufen, die ein CT liefert.</p>'''.replace("{MDR}", MDR),
+<p>DICOM (Digital Imaging and Communications in Medicine) ist ein internationaler Standard für medizinische Bilder. Eine DICOM-Datei enthält das Bild selbst und zusätzlich Angaben wie Patientenname, Untersuchungsdatum, Gerät, Schichtdicke und Kontrastvorgaben. Deshalb öffnen normale Bildbetrachter diese Dateien nicht: Sie kennen weder das Format noch die 12- oder 16-Bit-Graustufen, die ein CT liefert.</p>'''.replace("{MDR}", MDR),
   [("Ist der DICOM Viewer wirklich kostenlos?", "Ja. Keine Anmeldung, keine Werbung im Viewer, keine Testphase."),
    ("Werden meine Bilder hochgeladen?", "Nein. Die Dateien werden ausschließlich in Ihrem Browser gelesen. Es gibt keinen Server, der sie empfängt."),
    ("Kann ich damit eine Diagnose stellen?", "Nein. Der Viewer ist kein Medizinprodukt und hat bewusst keine Mess- oder Befundfunktionen. Er dient nur zur Ansicht."),
-   ("Warum sehe ich nur eine Fehlermeldung?", "Dann ist das Bild in einem seltenen Format gespeichert, etwa Deflate, HTJ2K oder als Video (MPEG/H.264). Die Meldung nennt das genaue Format. JPEG, JPEG Lossless, JPEG-LS, JPEG 2000 und RLE werden unterstützt."),
+   ("Warum sehe ich nur eine Fehlermeldung?", "Dann ist das Bild in einem nicht unterstützten Format gespeichert, etwa Deflate, HTJ2K oder als Video (MPEG/H.264). Die Meldung nennt das genaue Format. JPEG, JPEG Lossless, JPEG-LS, JPEG 2000 und RLE werden unterstützt."),
    ("Funktioniert es auf dem Handy?", "Ja, in aktuellen Browsern auf Android und iPhone. Für große CT-Serien ist ein Computer angenehmer.")],
   APP_LD, tool=True)))
 
@@ -212,11 +212,11 @@ PAGES.append(("radiologie-cd-oeffnen/", page("radiologie-cd-oeffnen/", "Radiolog
   "Radiologie-CD öffnen – am PC und am Mac",
   "Sie haben nach dem MRT oder CT eine CD bekommen, aber der Viewer darauf startet nicht? So sehen Sie Ihre Bilder trotzdem an – kostenlos und ohne etwas zu installieren.",
   '''<h2>Was ist auf einer Radiologie-CD?</h2>
-<p>Typisch sind drei Dinge: eine Datei namens <code>DICOMDIR</code> (das Inhaltsverzeichnis), ein Ordner wie <code>DICOM</code> oder <code>IMAGES</code> mit hunderten Einzelbildern ohne Dateiendung, und oft ein mitgelieferter Windows-Viewer samt <code>autorun.inf</code>. Die Bilder selbst sind immer DICOM-Dateien – nur der Viewer ist austauschbar.</p>
+<p>Zu einer solchen CD gehören: eine Datei namens <code>DICOMDIR</code> (das Inhaltsverzeichnis), ein Ordner wie <code>DICOM</code> oder <code>IMAGES</code> mit den Einzelbildern ohne Dateiendung, und gegebenenfalls ein mitgelieferter Windows-Viewer samt <code>autorun.inf</code>. Die Bilder selbst sind DICOM-Dateien – nur der Viewer ist austauschbar.</p>
 <h2>Warum startet der CD-Viewer nicht?</h2>
-<ul><li><strong>Mac:</strong> Der mitgelieferte Viewer ist fast immer ein Windows-Programm (.exe). macOS kann ihn nicht ausführen.</li>
-<li><strong>Windows 10/11:</strong> Autostart von CDs ist meist deaktiviert, oder der alte Viewer wird von Virenschutz bzw. SmartScreen blockiert.</li>
-<li><strong>Kein Laufwerk:</strong> Viele Laptops haben kein CD-Laufwerk mehr. Ein externes USB-Laufwerk für rund 20 € hilft, alternativ kopiert jemand den CD-Inhalt auf einen USB-Stick.</li>
+<ul><li><strong>Mac:</strong> Der mitgelieferte Viewer kann ein Windows-Programm (.exe) sein. macOS kann .exe-Dateien nicht ausführen.</li>
+<li><strong>Windows 10/11:</strong> Autostart von CDs kann deaktiviert sein, oder der alte Viewer wird von Virenschutz bzw. SmartScreen blockiert.</li>
+<li><strong>Kein Laufwerk:</strong> Ein Laptop kann ohne CD-Laufwerk gebaut sein. Ein externes USB-Laufwerk für rund 20 € hilft, alternativ kopiert jemand den CD-Inhalt auf einen USB-Stick.</li>
 <li><strong>Firmen-PC:</strong> Ohne Administratorrechte darf man nichts installieren.</li></ul>
 <h2>Schritt für Schritt</h2>
 <ol><li>CD einlegen (oder den kopierten Ordner bereithalten).</li>
@@ -229,7 +229,7 @@ PAGES.append(("radiologie-cd-oeffnen/", page("radiologie-cd-oeffnen/", "Radiolog
 <h2>Bilder sichern</h2>
 <p>CDs altern. Kopieren Sie den kompletten Inhalt in einen Ordner auf Ihrem Rechner oder einen USB-Stick, dann können Sie die Bilder auch ohne Laufwerk jederzeit wieder öffnen. Einzelne Aufnahmen für Angehörige exportieren Sie anonym als <a href="../dicom-in-jpg/">JPG oder PNG</a>.</p>''',
   [("Brauche ich das Programm von der CD?", "Nein. Die Bilder sind im Standardformat DICOM gespeichert und lassen sich mit jedem DICOM-Viewer öffnen, auch im Browser."),
-   ("Die Dateien haben keine Endung – ist das normal?", "Ja. Auf Radiologie-CDs heißen Bilder oft IM000001 oder ähnlich. Der Viewer erkennt sie an der internen Kennung DICM."),
+   ("Die Dateien haben keine Endung – ist das normal?", "Ja. Auf Radiologie-CDs können Bilder IM000001 oder ähnlich heißen. Der Viewer erkennt sie an der internen Kennung DICM."),
    ("Mein Laptop hat kein CD-Laufwerk. Was tun?", "Ein externes USB-Laufwerk nutzen oder den Inhalt an einem anderen Rechner auf einen USB-Stick kopieren und diesen Ordner laden."),
    ("Warum wird nichts angezeigt, wenn ich DICOMDIR öffne?", "Das DICOMDIR ist nur ein Inhaltsverzeichnis ohne Bilder. Wählen Sie den ganzen Ordner der CD.")])))
 
@@ -242,9 +242,9 @@ PAGES.append(("dicom-in-jpg/", page("dicom-in-jpg/", "DICOM in JPG oder PNG umwa
 <li>Die gewünschte Schicht suchen und mit Fenster/Level Helligkeit und Kontrast einstellen. Exportiert wird genau das, was Sie sehen – in der Originalauflösung des Bildes.</li>
 <li>Auf <strong>PNG</strong> oder <strong>JPG</strong> klicken. Fertig.</li></ol>
 <h2>PNG oder JPG?</h2>
-<p><strong>PNG</strong> ist verlustfrei und die bessere Wahl für feine Strukturen oder wenn das Bild weiterbearbeitet wird. <strong>JPG</strong> ist kleiner und lässt sich problemlos per Messenger oder E-Mail verschicken. Für Fotos von Ultraschall oder Röntgen reicht JPG meist völlig.</p>
+<p><strong>PNG</strong> ist verlustfrei und die bessere Wahl für feine Strukturen oder wenn das Bild weiterbearbeitet wird. <strong>JPG</strong> ist kleiner und lässt sich problemlos per Messenger oder E-Mail verschicken. Für Fotos von Ultraschall oder Röntgen kann JPG ausreichen.</p>
 <h2>Warum anonymisieren?</h2>
-<p>Eine DICOM-Datei trägt Name, Geburtsdatum, Patienten-ID, Einrichtung und überweisende Ärztin in sich. Wer die Originaldatei weitergibt, gibt diese Daten mit. Viele Viewer blenden sie außerdem ins Bild ein, sodass sie auf jedem Screenshot landen.</p>
+<p>Eine DICOM-Datei trägt Name, Geburtsdatum, Patienten-ID, Einrichtung und überweisende Ärztin in sich. Wer die Originaldatei weitergibt, gibt diese Daten mit. Viewer können sie außerdem ins Bild einblenden, sodass sie auf einem Screenshot landen.</p>
 <p>Unser Export enthält <strong>standardmäßig nur die Pixel</strong>: keine Metadaten, keine eingeblendeten Namen. Nur wenn Sie „Patientendaten anzeigen“ und zusätzlich „Name im Export einbrennen“ aktivieren, wird der Name bewusst ins Bild geschrieben.</p>
 <h2>Checkliste vor dem Weitergeben</h2>
 <ul><li>Ist Text direkt ins Bild gebrannt? Manche Ultraschall- und ältere Röntgengeräte schreiben Namen oder Datum in die Pixel. Das kann kein Export entfernen – prüfen Sie das Bild und schneiden Sie die Stelle notfalls zu.</li>
@@ -260,7 +260,7 @@ PAGES.append(("dicom-viewer-mac/", page("dicom-viewer-mac/", "DICOM Viewer für 
   "DICOM Viewer für den Mac",
   "Der Viewer auf der Radiologie-CD ist ein Windows-Programm, und Vorschau kann mit .dcm nichts anfangen? Im Browser öffnen Sie DICOM-Bilder am Mac ohne Installation.",
   '''<h2>Warum der Mac DICOM nicht von Haus aus öffnet</h2>
-<p>macOS bringt mit Vorschau einen guten Bildbetrachter mit, der aber nur gängige Formate wie JPG, PNG, HEIC oder PDF kennt. DICOM-Dateien enthalten 12- bis 16-Bit-Graustufen und medizinische Zusatzdaten – dafür braucht es einen DICOM-Viewer. Die auf CDs mitgelieferten Programme laufen meist nur unter Windows.</p>
+<p>macOS bringt mit Vorschau einen guten Bildbetrachter mit, der aber nur Formate wie JPG, PNG, HEIC oder PDF kennt. DICOM-Dateien enthalten 12- bis 16-Bit-Graustufen und medizinische Zusatzdaten – dafür braucht es einen DICOM-Viewer. Die auf CDs mitgelieferten Programme sind auf Windows ausgelegt.</p>
 <h2>So geht es am Mac</h2>
 <ol><li>CD einlegen (bei Macs ohne Laufwerk: USB-Laufwerk anschließen) – sie erscheint im Finder in der Seitenleiste.</li>
 <li><a href="../">DICOM Viewer</a> in Safari, Chrome oder Firefox öffnen.</li>
@@ -272,9 +272,9 @@ PAGES.append(("dicom-viewer-mac/", page("dicom-viewer-mac/", "DICOM Viewer für 
 <li><strong>Helligkeit/Kontrast:</strong> mit einem Finger klicken und ziehen (Modus „Fenster“)</li>
 <li><strong>Verschieben:</strong> Modus „Verschieben“ wählen</li></ul>
 <h2>Datenschutz am Mac</h2>
-<p>Safari meldet beim Ordner-Auswählen eventuell „Hochladen“. Das ist die übliche Formulierung des Browsers – der Viewer schickt nichts ins Internet, sondern liest die Dateien nur lokal. Sie können das prüfen, indem Sie nach dem Laden der Seite das WLAN ausschalten: Der Viewer funktioniert weiter.</p>''',
+<p>Safari meldet beim Ordner-Auswählen eventuell „Hochladen“. Das ist die Formulierung des Browsers – der Viewer schickt nichts ins Internet, sondern liest die Dateien nur lokal. Sie können das prüfen, indem Sie nach dem Laden der Seite das WLAN ausschalten: Der Viewer funktioniert weiter.</p>''',
   [("Läuft der Viewer auf Apple-Silicon-Macs (M1–M4)?", "Ja. Er läuft im Browser und ist damit unabhängig vom Prozessor."),
-   ("Welcher Browser ist am besten?", "Alle aktuellen Versionen von Safari, Chrome, Edge und Firefox funktionieren. Für sehr große Serien ist Chrome oft etwas schneller."),
+   ("Welcher Browser ist am besten?", "Alle aktuellen Versionen von Safari, Chrome, Edge und Firefox funktionieren."),
    ("Muss ich etwas installieren oder Gatekeeper umgehen?", "Nein. Es wird keine App installiert und keine Sicherheitseinstellung geändert."),
    ("Kann ich Bilder für Keynote oder Pages verwenden?", "Ja, über den Export als PNG oder JPG – standardmäßig ohne Patientendaten.")])))
 
@@ -307,15 +307,15 @@ PAGES.append(("mrt-bilder-verstehen/", page("mrt-bilder-verstehen/", "MRT-Bilder
   "Auf Ihrer CD liegen zehn Serien mit kryptischen Namen wie „t2_tse_sag“ oder „t1_vibe_fs_tra_KM“? Hier steht, was diese Abkürzungen bedeuten – als Orientierung, nicht als Befund.",
   '''<div class="card"><strong>Wichtig:</strong> Diese Seite erklärt Begriffe, sie ersetzt keinen Befund. Ob etwas auffällig ist, kann nur die Radiologin oder der Radiologe beurteilen, der alle Serien gemeinsam und mit Ihrer Vorgeschichte betrachtet.</div>
 <h2>Die Seriennamen entschlüsseln</h2>
-<p>Ein Serienname setzt sich meist aus Wichtung, Sequenztyp, Zusätzen und Schnittebene zusammen. Beispiel <code>t2_tse_fs_sag</code>: T2-gewichtet, Turbo-Spin-Echo, mit Fettsättigung, sagittale Ebene.</p>
+<p>Ein Serienname setzt sich aus Wichtung, Sequenztyp, Zusätzen und Schnittebene zusammen. Beispiel <code>t2_tse_fs_sag</code>: T2-gewichtet, Turbo-Spin-Echo, mit Fettsättigung, sagittale Ebene.</p>
 <table><thead><tr><th>Kürzel</th><th>Bedeutung</th><th>Woran man es erkennt</th></tr></thead><tbody>
 <tr><td>T1</td><td>T1-Wichtung, gute Darstellung der Anatomie</td><td>Fett hell, Wasser (z. B. Liquor) dunkel</td></tr>
 <tr><td>T2</td><td>T2-Wichtung, zeigt Flüssigkeit und Wassereinlagerungen</td><td>Wasser und Liquor hell, Fett mittelhell</td></tr>
-<tr><td>PD</td><td>Protonendichte, oft bei Gelenken</td><td>Kontrast zwischen T1 und T2, Knorpel gut sichtbar</td></tr>
+<tr><td>PD</td><td>Protonendichte</td><td>Kontrast zwischen T1 und T2, Knorpel gut sichtbar</td></tr>
 <tr><td>FLAIR</td><td>T2 mit unterdrücktem Wassersignal, v. a. Kopf</td><td>Liquor dunkel, Gewebe ähnlich T2</td></tr>
 <tr><td>STIR / fs / FatSat / SPAIR</td><td>Fettunterdrückung</td><td>Fett dunkel, Flüssigkeit hebt sich stark ab</td></tr>
 <tr><td>DWI / ADC</td><td>Diffusion, misst Wasserbeweglichkeit</td><td>Körniges, kontrastarmes Bild; ADC ist die berechnete Karte dazu</td></tr>
-<tr><td>KM / +C / post / Gd</td><td>Nach Kontrastmittel</td><td>Meist T1; Gefäße und gut durchblutetes Gewebe hell</td></tr>
+<tr><td>KM / +C / post / Gd</td><td>Nach Kontrastmittel</td><td>Aufnahme nach Kontrastmittelgabe; durchblutetes Gewebe kann hell erscheinen</td></tr>
 <tr><td>localizer / scout / survey</td><td>Übersichtsbilder zur Planung</td><td>Wenige grobe Bilder in drei Ebenen</td></tr>
 </tbody></table>
 <h2>Die drei Schnittebenen</h2>
@@ -323,15 +323,15 @@ PAGES.append(("mrt-bilder-verstehen/", page("mrt-bilder-verstehen/", "MRT-Bilder
 <li><strong>cor (coronal/koronar):</strong> Schnitt von vorn, als ob man Ihnen gegenübersteht.</li>
 <li><strong>tra / ax (transversal/axial):</strong> Schnitt quer, betrachtet von den Füßen her. Ihre linke Körperseite liegt daher auf dem Bild rechts.</li></ul>
 <h2>Hell und dunkel</h2>
-<p>Im MRT sagt Helligkeit nichts über „gut“ oder „schlecht“ aus, sondern nur über die Signalstärke in der jeweiligen Wichtung. Dasselbe Gewebe kann in T1 dunkel und in T2 hell sein. Deshalb werden immer mehrere Serien verglichen. Im CT ist das anders: Dort entspricht die Helligkeit der Dichte (Knochen hell, Luft schwarz), gemessen in Hounsfield-Einheiten.</p>
+<p>Im MRT sagt Helligkeit nichts über „gut“ oder „schlecht“ aus, sondern nur über die Signalstärke in der jeweiligen Wichtung. Dasselbe Gewebe kann in T1 dunkel und in T2 hell sein. Deshalb werden mehrere Serien miteinander verglichen. Im CT ist das anders: Dort entspricht die Helligkeit der Dichte (Knochen hell, Luft schwarz), gemessen in Hounsfield-Einheiten.</p>
 <h2>Selbst ansehen</h2>
 <p>Laden Sie Ihre CD in den <a href="../">DICOM Viewer</a>. In der Tag-Ansicht sehen Sie zu jeder Serie die Beschreibung (0008,103E), Echozeit (TE) und Repetitionszeit (TR). Faustregel: kurze TR und TE ≈ T1, lange TR und TE ≈ T2. Wie Sie die CD öffnen, steht unter <a href="../radiologie-cd-oeffnen/">Radiologie-CD öffnen</a>.</p>
 <h2>Was ist DICOM überhaupt?</h2>
-<p>DICOM ist das Dateiformat, in dem MRT, CT, Röntgen und Ultraschall gespeichert werden. Jede Datei enthält ein Bild (oder einen kurzen Film) plus Angaben zu Patient, Gerät und Aufnahmeparametern. Eine MRT-Untersuchung besteht meist aus mehreren Serien zu je 20 bis 200 Schichten.</p>''',
+<p>DICOM ist das Dateiformat, in dem MRT, CT, Röntgen und Ultraschall gespeichert werden. Jede Datei enthält ein Bild (oder einen kurzen Film) plus Angaben zu Patient, Gerät und Aufnahmeparametern. Eine MRT-Untersuchung besteht aus einer oder mehreren Serien aus Schichtbildern.</p>''',
   [("Was ist der Unterschied zwischen T1 und T2?", "In T1 erscheint Fett hell und Flüssigkeit dunkel, in T2 ist Flüssigkeit hell. T1 zeigt gut die Anatomie, T2 eher Wassereinlagerungen und Entzündungen."),
-   ("Warum gibt es so viele Serien?", "Jede Serie betont andere Gewebeeigenschaften oder zeigt eine andere Schnittebene. Erst zusammen ergeben sie ein vollständiges Bild."),
+   ("Warum gibt es mehrere Serien?", "Jede Serie betont andere Gewebeeigenschaften oder zeigt eine andere Schnittebene. Erst zusammen ergeben sie ein vollständiges Bild."),
    ("Kann ich anhand der Bilder selbst etwas erkennen?", "Laien können Anatomie erkennen, aber Befunde zuverlässig zu beurteilen erfordert Fachwissen. Der Viewer ist kein Medizinprodukt und nur zur Ansicht gedacht."),
-   ("Was bedeutet KM im Seriennamen?", "KM steht für Kontrastmittel. Diese Serie wurde nach der Gabe von Kontrastmittel aufgenommen, meist in T1-Wichtung.")])))
+   ("Was bedeutet KM im Seriennamen?", "KM steht für Kontrastmittel. Diese Serie wurde nach der Gabe von Kontrastmittel aufgenommen.")])))
 
 exec(open('articles.py', encoding='utf-8').read())
 
@@ -364,7 +364,7 @@ Unterstützte Transfer-Syntaxen: Implicit/Explicit VR Little Endian, Explicit VR
 - [MRT-Bilder verstehen]({BASE}mrt-bilder-verstehen/): T1, T2, FLAIR, Schnittebenen für Laien
 - [LDT, BDT und GDT öffnen]({BASE}ldt-bdt-gdt-dateien-oeffnen/)
 - [Laborbefunde (LDT) verstehen]({BASE}laborbefund-ldt-verstehen/)
-- [Medizinische Datenformate: DICOM, LDT, BDT, GDT, Vergleich mit HL7 v2, CDA und FHIR]({BASE}medizinische-datenformate/)
+- [Medizinische Datenformate: DICOM, LDT, BDT, GDT, HL7 v2, HL7 CDA und FHIR im Vergleich]({BASE}medizinische-datenformate/)
 - [Datenschutz]({BASE}datenschutz/)
 
 ## Verwandte Tools
